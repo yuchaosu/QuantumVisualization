@@ -30,3 +30,24 @@
   color: var(--text-primary);
   border-color: var(--accent-blue);
 }
+
+.zoomLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.zoomIcon {
+  font-size: 14px;
+}
+
+.zoomSlider {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 20px;
+  height: 72px;
+  cursor: pointer;
+  accent-color: var(--accent-blue);
+}

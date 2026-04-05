@@ -15,6 +15,9 @@ type Props = {
   wireframeColor: string
   cameraPreset: 'top' | 'front' | 'free' | null
   onPresetApplied: () => void
+  onCameraChange: (distance: number) => void
+  zoomTarget: number | null
+  onZoomApplied: () => void
 }
 
 // Convert Bloch sphere angles to Cartesian point on unit sphere.
@@ -28,7 +31,11 @@ function blochToCartesian(theta: number, phi: number): [number, number, number] 
   ]
 }
 
-export default function SphereScene({ theta, phi, vectorColor, labelColor, gridColor, wireframeColor, cameraPreset, onPresetApplied }: Props) {
+export default function SphereScene({
+  theta, phi, vectorColor, labelColor, gridColor, wireframeColor,
+  cameraPreset, onPresetApplied,
+  onCameraChange, zoomTarget, onZoomApplied
+}: Props) {
   const arrowGroupRef = useRef<THREE.Group>(null)
   const cameraRef = useRef<THREE.Camera | null>(null)
   const controlsRef = useRef<OrbitControlsImpl | null>(null)
@@ -72,6 +79,24 @@ export default function SphereScene({ theta, phi, vectorColor, labelColor, gridC
     onPresetApplied()
   }, [cameraPreset, onPresetApplied])
 
+  useEffect(() => {
+    if (zoomTarget === null || !cameraRef.current || !controlsRef.current) return
+    const cam = cameraRef.current
+    const controls = controlsRef.current
+    const current = cam.position.length()
+    if (current === 0) return
+    const scale = zoomTarget / current
+    gsap.to(cam.position, {
+      x: cam.position.x * scale,
+      y: cam.position.y * scale,
+      z: cam.position.z * scale,
+      duration: 0.2,
+      ease: 'power2.out',
+      onUpdate: () => controls.update(),
+      onComplete: () => onZoomApplied(),
+    })
+  }, [zoomTarget, onZoomApplied])
+
   // Per-frame: update arrow group rotation to point toward the animated Bloch position.
   // Three.js lookAt points the object's local +Z toward the target.
   // The shaft/cone are built along the local +Z axis so this works directly.
@@ -114,7 +139,14 @@ export default function SphereScene({ theta, phi, vectorColor, labelColor, gridC
 
   return (
     <>
-      <OrbitControls ref={controlsRef as React.RefObject<OrbitControlsImpl>} enablePan={false} />
+      <OrbitControls
+        ref={controlsRef as React.RefObject<OrbitControlsImpl>}
+        enablePan={false}
+        enableZoom={true}
+        onChange={() => {
+          if (cameraRef.current) onCameraChange(cameraRef.current.position.length())
+        }}
+      />
       <ambientLight intensity={0.5} />
 
       {/* Sphere — ghost outline at 15% opacity */}
