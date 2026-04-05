@@ -23,7 +23,7 @@ export default function BlochSphere({ theta, phi, theme }: Props) {
 
   return (
     <div className={styles.container}>
-      <Canvas camera={{ position: [1.5, 1.5, 1.5], fov: 50 }}>
+      <Canvas style={{ position: 'absolute', inset: 0 }} camera={{ position: [1.5, 1.5, 1.5], fov: 50 }}>
         <SphereScene
           theta={theta}
           phi={phi}

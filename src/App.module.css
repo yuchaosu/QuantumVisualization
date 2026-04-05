@@ -8,4 +8,6 @@
 .sphereRow {
   flex: 1;
   min-height: 350px;
+  display: flex;
+  flex-direction: column;
 }
