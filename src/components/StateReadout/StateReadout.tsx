@@ -19,10 +19,8 @@ function fmtComplex(c: Complex): string {
 }
 
 export default function StateReadout({ alpha, beta, theta, phi }: Props) {
-  const magAlpha = Math.sqrt(alpha.re ** 2 + alpha.im ** 2)
-  const magBeta  = Math.sqrt(beta.re ** 2 + beta.im ** 2)
-  const probZero = magAlpha * magAlpha
-  const probOne  = magBeta  * magBeta
+  const probZero = alpha.re ** 2 + alpha.im ** 2
+  const probOne  = beta.re  ** 2 + beta.im  ** 2
 
   return (
     <div className={styles.container}>

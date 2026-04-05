@@ -1,5 +1,5 @@
 // src/components/Explanation/Explanation.tsx
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import type { GateType } from '../../lib/quantum'
@@ -16,10 +16,10 @@ export default function Explanation({ lastGate }: Props) {
   const [tab, setTab] = useState<Tab>('beginner')
   const entry = getExplanation(lastGate)
 
-  const matrixHtml = katex.renderToString(entry.matrix, {
-    throwOnError: false,
-    displayMode: true,
-  })
+  const matrixHtml = useMemo(
+    () => katex.renderToString(entry.matrix, { throwOnError: false, displayMode: true }),
+    [entry.matrix]
+  )
 
   return (
     <div className={styles.container}>
