@@ -85,6 +85,10 @@ function getSingleGateMatrix(gate: GateType, angle = 0): Matrix2 {
     case 'Rx': return [[c(cos),            c(0, -sin) ], [c(0, -sin), c(cos)     ]]
     case 'Ry': return [[c(cos),            c(-sin)    ], [c(sin),     c(cos)     ]]
     case 'Rz': return [[expI(-angle / 2),  c(0)       ], [c(0),       expI(angle / 2)]]
+    default: {
+      const _exhaustive: never = gate
+      throw new Error(`Unknown gate type: ${_exhaustive}`)
+    }
   }
 }
 
@@ -113,7 +117,7 @@ export function applyCircuitGate(
   if (gate.type === 'cnot') {
     const ctrlMask = 1 << (numQubits - 1 - gate.control)
     const tgtMask  = 1 << (numQubits - 1 - gate.target)
-    const result: Complex[] = new Array(amplitudes.length)
+    const result = [...amplitudes]
     for (let i = 0; i < amplitudes.length; i++) {
       result[i & ctrlMask ? i ^ tgtMask : i] = amplitudes[i]
     }
