@@ -130,6 +130,23 @@ describe('circuitToTensorNetwork', () => {
     const net = circuitToTensorNetwork(gates, 2)
     expect(net.edges.every(e => e.indexRole === 'out')).toBe(true)
   })
+
+  it('edge from/to fields are correct for single gate + result', () => {
+    const gates: CircuitGate[] = [{ id:'g1', type:'single', gate:'H', qubit:0, step:0 }]
+    const net = circuitToTensorNetwork(gates, 1)
+    const ketToGate = net.edges.find(e => e.from === 'ket-0' && e.to === 'gate-g1')
+    const gateToResult = net.edges.find(e => e.from === 'gate-g1' && e.to === 'result')
+    expect(ketToGate).toBeDefined()
+    expect(gateToResult).toBeDefined()
+  })
+
+  it('SWAP gate node: rank 4, shape [2,2,2,2]', () => {
+    const gates: CircuitGate[] = [{ id:'g1', type:'swap', qubit0:0, qubit1:1, step:0 }]
+    const net = circuitToTensorNetwork(gates, 2)
+    const swapNode = net.nodes.find(n => n.label === 'SWAP')!
+    expect(swapNode.rank).toBe(4)
+    expect(swapNode.shape).toEqual([2, 2, 2, 2])
+  })
 })
 
 describe('parseCircuitCode', () => {
@@ -190,5 +207,11 @@ describe('parseCircuitCode', () => {
     expect(error).toBeNull()
     const g = gates[0] as Extract<CircuitGate, { type:'single' }>
     expect(Math.abs((g.angle ?? 0) - Math.PI)).toBeLessThan(1e-10)
+  })
+
+  it('fails on SWAP same qubit', () => {
+    const { gates, error } = parseCircuitCode('SWAP(1,1)')
+    expect(error).not.toBeNull()
+    expect(gates).toHaveLength(0)
   })
 })
