@@ -1,5 +1,7 @@
 import { getInitialState, getAmplitudeEntries, applyCircuitGate } from '../../src/lib/tensorNetwork'
+import { circuitToTensorNetwork, parseCircuitCode } from '../../src/lib/tensorNetwork'
 import type { Complex } from '../../src/lib/tensorNetwork'
+import type { CircuitGate } from '../../src/lib/tensorNetwork'
 
 describe('getInitialState', () => {
   it('returns 2^n amplitudes', () => {
@@ -88,5 +90,105 @@ describe('applyCircuitGate', () => {
     const r = applyCircuitGate(s, { id:'g1', type:'single', gate:'Z', qubit:0, step:0 }, 1)
     expect(near(r[0].re, 1)).toBe(true)
     expect(near(r[1].re, 0)).toBe(true)
+  })
+})
+
+describe('circuitToTensorNetwork', () => {
+  it('empty circuit: N ket nodes + 1 result node, N edges', () => {
+    const net = circuitToTensorNetwork([], 2)
+    expect(net.nodes.filter(n => n.kind === 'ket')).toHaveLength(2)
+    expect(net.nodes.filter(n => n.kind === 'result')).toHaveLength(1)
+    expect(net.nodes.filter(n => n.kind === 'gate')).toHaveLength(0)
+    expect(net.edges).toHaveLength(2)  // ket-0→result, ket-1→result
+  })
+
+  it('single H gate: 1 gate node, 3 edges (ket→H, H→result, ket-1→result)', () => {
+    const gates: CircuitGate[] = [{ id:'g1', type:'single', gate:'H', qubit:0, step:0 }]
+    const net = circuitToTensorNetwork(gates, 2)
+    expect(net.nodes.filter(n => n.kind === 'gate')).toHaveLength(1)
+    expect(net.nodes.find(n => n.kind === 'gate')!.label).toBe('H')
+    expect(net.nodes.find(n => n.kind === 'gate')!.rank).toBe(2)
+    expect(net.edges).toHaveLength(3)
+  })
+
+  it('single H gate node has shape [2,2]', () => {
+    const gates: CircuitGate[] = [{ id:'g1', type:'single', gate:'H', qubit:0, step:0 }]
+    const gateNode = circuitToTensorNetwork(gates, 2).nodes.find(n => n.kind === 'gate')!
+    expect(gateNode.shape).toEqual([2, 2])
+  })
+
+  it('CNOT gate node: rank 4, shape [2,2,2,2]', () => {
+    const gates: CircuitGate[] = [{ id:'g1', type:'cnot', control:0, target:1, step:0 }]
+    const net = circuitToTensorNetwork(gates, 2)
+    const cnotNode = net.nodes.find(n => n.label === 'CNOT')!
+    expect(cnotNode.rank).toBe(4)
+    expect(cnotNode.shape).toEqual([2, 2, 2, 2])
+  })
+
+  it('all edges have indexRole "out"', () => {
+    const gates: CircuitGate[] = [{ id:'g1', type:'single', gate:'H', qubit:0, step:0 }]
+    const net = circuitToTensorNetwork(gates, 2)
+    expect(net.edges.every(e => e.indexRole === 'out')).toBe(true)
+  })
+})
+
+describe('parseCircuitCode', () => {
+  it('parses H(0)', () => {
+    const { gates, error } = parseCircuitCode('H(0)')
+    expect(error).toBeNull()
+    expect(gates).toHaveLength(1)
+    expect(gates[0]).toMatchObject({ type:'single', gate:'H', qubit:0, step:0 })
+  })
+
+  it('parses CNOT(0,1)', () => {
+    const { gates, error } = parseCircuitCode('CNOT(0,1)')
+    expect(error).toBeNull()
+    expect(gates[0]).toMatchObject({ type:'cnot', control:0, target:1 })
+  })
+
+  it('parses Rz(0,pi/4) with correct angle', () => {
+    const { gates, error } = parseCircuitCode('Rz(0,pi/4)')
+    expect(error).toBeNull()
+    const g = gates[0] as Extract<CircuitGate, { type:'single' }>
+    expect(Math.abs((g.angle ?? 0) - Math.PI / 4)).toBeLessThan(1e-10)
+  })
+
+  it('parses multiple gates, assigns sequential steps', () => {
+    const { gates, error } = parseCircuitCode('H(0), CNOT(0,1)')
+    expect(error).toBeNull()
+    expect(gates).toHaveLength(2)
+    expect(gates[0].step).toBe(0)
+    expect(gates[1].step).toBe(1)
+  })
+
+  it('SWAP parses correctly', () => {
+    const { gates, error } = parseCircuitCode('SWAP(0,1)')
+    expect(error).toBeNull()
+    expect(gates[0]).toMatchObject({ type:'swap', qubit0:0, qubit1:1 })
+  })
+
+  it('fails fast on unknown gate name', () => {
+    const { gates, error } = parseCircuitCode('INVALID(0)')
+    expect(error).not.toBeNull()
+    expect(gates).toHaveLength(0)
+  })
+
+  it('fails on missing qubit arg', () => {
+    const { gates, error } = parseCircuitCode('H()')
+    expect(error).not.toBeNull()
+    expect(gates).toHaveLength(0)
+  })
+
+  it('fails on CNOT same qubit', () => {
+    const { gates, error } = parseCircuitCode('CNOT(1,1)')
+    expect(error).not.toBeNull()
+    expect(gates).toHaveLength(0)
+  })
+
+  it('parses pi (no division)', () => {
+    const { gates, error } = parseCircuitCode('Rx(0,pi)')
+    expect(error).toBeNull()
+    const g = gates[0] as Extract<CircuitGate, { type:'single' }>
+    expect(Math.abs((g.angle ?? 0) - Math.PI)).toBeLessThan(1e-10)
   })
 })
