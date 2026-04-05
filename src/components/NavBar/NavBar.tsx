@@ -1,17 +1,26 @@
+// src/components/NavBar/NavBar.tsx
 import styles from './NavBar.module.css'
 
 type Props = {
   theme: 'dark' | 'light'
   onToggleTheme: () => void
+  page: 'bloch' | 'circuits'
+  onNavigate: (page: 'bloch' | 'circuits') => void
 }
 
-export default function NavBar({ theme, onToggleTheme }: Props) {
+export default function NavBar({ theme, onToggleTheme, page, onNavigate }: Props) {
   return (
     <nav className={styles.nav}>
       <span className={styles.logo}>⬛ QuantumViz</span>
       <div className={styles.links}>
-        <span className={styles.linkActive}>Bloch Sphere</span>
-        <span className={styles.linkDisabled}>Circuits</span>
+        <span
+          className={page === 'bloch' ? styles.linkActive : styles.link}
+          onClick={() => onNavigate('bloch')}
+        >Bloch Sphere</span>
+        <span
+          className={page === 'circuits' ? styles.linkActive : styles.link}
+          onClick={() => onNavigate('circuits')}
+        >Circuits</span>
         <span className={styles.linkDisabled}>Algorithms</span>
       </div>
       <button

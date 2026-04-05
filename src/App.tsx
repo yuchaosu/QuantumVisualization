@@ -9,6 +9,7 @@ import BlochSphere from './components/BlochSphere/BlochSphere'
 import GateControls from './components/GateControls/GateControls'
 import StateReadout from './components/StateReadout/StateReadout'
 import Explanation from './components/Explanation/Explanation'
+import CircuitPage from './components/CircuitPage/CircuitPage'
 import styles from './App.module.css'
 
 export type HistoryEntry = {
@@ -38,6 +39,7 @@ const initialState: AppState = {
 }
 
 const THEME_STORAGE_KEY = 'qv-theme'
+const PAGE_STORAGE_KEY = 'qv-page'
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
@@ -80,6 +82,11 @@ export default function App() {
     return stored === 'light' ? 'light' : 'dark'
   })
 
+  const [page, setPage] = useState<'bloch' | 'circuits'>(() => {
+    const stored = localStorage.getItem(PAGE_STORAGE_KEY)
+    return stored === 'circuits' ? 'circuits' : 'bloch'
+  })
+
   // Apply theme to <html> whenever it changes.
   // Dark mode removes the attribute entirely — dark is the :root default,
   // so no attribute is needed (removing is cleaner than setting to 'dark').
@@ -96,6 +103,11 @@ export default function App() {
     setTheme(t => (t === 'dark' ? 'light' : 'dark'))
   }, [])
 
+  const handleNavigate = useCallback((p: 'bloch' | 'circuits') => {
+    setPage(p)
+    localStorage.setItem(PAGE_STORAGE_KEY, p)
+  }, [])
+
   const handleApplyGate = useCallback((gate: GateType, angle?: number) => {
     dispatch({ type: 'APPLY_GATE', gate, angle })
   }, [])
@@ -108,26 +120,35 @@ export default function App() {
   return (
     <div className={styles.app}>
       {/* Row 1 */}
-      <NavBar theme={theme} onToggleTheme={handleToggleTheme} />
-
-      {/* Row 2: BlochSphere */}
-      <div className={styles.sphereRow}>
-        <BlochSphere theta={theta} phi={phi} theme={theme} />
-      </div>
-
-      {/* Row 3 */}
-      <GateControls
-        history={state.history}
-        onApplyGate={handleApplyGate}
-        onUndo={handleUndo}
-        onReset={handleReset}
+      <NavBar
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
+        page={page}
+        onNavigate={handleNavigate}
       />
 
-      {/* Row 4 */}
-      <StateReadout alpha={state.alpha} beta={state.beta} theta={theta} phi={phi} />
+      {page === 'bloch' && (<>
+        {/* Row 2: BlochSphere */}
+        <div className={styles.sphereRow}>
+          <BlochSphere theta={theta} phi={phi} theme={theme} />
+        </div>
 
-      {/* Row 5 */}
-      <Explanation lastGate={state.lastGate} />
+        {/* Row 3 */}
+        <GateControls
+          history={state.history}
+          onApplyGate={handleApplyGate}
+          onUndo={handleUndo}
+          onReset={handleReset}
+        />
+
+        {/* Row 4 */}
+        <StateReadout alpha={state.alpha} beta={state.beta} theta={theta} phi={phi} />
+
+        {/* Row 5 */}
+        <Explanation lastGate={state.lastGate} />
+      </>)}
+
+      {page === 'circuits' && <CircuitPage theme={theme} />}
     </div>
   )
 }
