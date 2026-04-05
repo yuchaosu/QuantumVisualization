@@ -3,6 +3,7 @@ import { useReducer, useCallback } from 'react'
 import type { Complex } from './lib/quantum'
 import { applyGate } from './lib/quantum'
 import type { GateType } from './lib/quantum'
+import NavBar from './components/NavBar/NavBar'
 import styles from './App.module.css'
 
 export type HistoryEntry = {
@@ -75,8 +76,8 @@ export default function App() {
 
   return (
     <div className={styles.app}>
-      {/* Row 1: NavBar — placeholder */}
-      <div>NAV</div>
+      {/* Row 1 */}
+      <NavBar />
 
       {/* Row 2: BlochSphere — placeholder */}
       <div className={styles.sphereRow}>SPHERE</div>
