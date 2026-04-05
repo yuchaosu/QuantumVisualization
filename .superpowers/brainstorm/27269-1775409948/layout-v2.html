@@ -1,0 +1,127 @@
+<h2>Vertical Layout Options</h2>
+<p class="subtitle">Stacked sections, scrolling top to bottom</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:12px;background:#0d1117;border-radius:8px;font-family:monospace;font-size:11px;color:#e6edf3">
+      <!-- Nav -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px 10px;margin-bottom:6px;color:#e6edf3;font-size:10px">
+        ⬛ QuantumViz &nbsp;&nbsp; Bloch Sphere &nbsp; Circuits &nbsp; Algorithms
+      </div>
+      <!-- Sphere -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;color:#8b949e;font-size:11px">
+        🌐 Bloch Sphere (drag to rotate)
+      </div>
+      <!-- Gate toolbar -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;margin-bottom:6px;display:flex;gap:5px;justify-content:center;flex-wrap:wrap">
+        <span style="background:#21262d;border:1px solid #58a6ff;padding:3px 8px;border-radius:4px;font-size:10px;color:#58a6ff">H</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">X</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Y</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Z</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Rx(θ)</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Ry(θ)</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">S</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">T</span>
+      </div>
+      <!-- State -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;margin-bottom:6px;display:flex;gap:16px;justify-content:center;color:#8b949e;font-size:10px">
+        <span>|ψ⟩ = α|0⟩ + β|1⟩</span>
+        <span style="color:#58a6ff">θ = 0.52</span>
+        <span style="color:#58a6ff">φ = 1.23</span>
+        <span>P(|0⟩) = 0.73</span>
+        <span>P(|1⟩) = 0.27</span>
+      </div>
+      <!-- Explanation -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;color:#8b949e;font-size:10px">
+        📖 Hadamard gate creates an equal superposition of |0⟩ and |1⟩...
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Sphere → Gates → State → Explanation</h3>
+      <p>Linear top-to-bottom flow. Sphere on top, gate toolbar below it, state readout, then explanation. Natural reading order.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:12px;background:#0d1117;border-radius:8px;font-family:monospace;font-size:11px;color:#e6edf3">
+      <!-- Nav -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px 10px;margin-bottom:6px;color:#e6edf3;font-size:10px">
+        ⬛ QuantumViz &nbsp;&nbsp; Bloch Sphere &nbsp; Circuits &nbsp; Algorithms
+      </div>
+      <!-- Explanation header -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;margin-bottom:6px;color:#8b949e;font-size:10px">
+        📖 <span style="color:#e6edf3">What is a qubit?</span> — A qubit lives in superposition until measured...
+      </div>
+      <!-- Sphere + state side by side -->
+      <div style="display:flex;gap:6px;margin-bottom:6px">
+        <div style="flex:1;background:#161b22;border:1px solid #30363d;border-radius:5px;height:90px;display:flex;align-items:center;justify-content:center;color:#8b949e;font-size:10px">
+          🌐 Bloch Sphere
+        </div>
+        <div style="width:110px;background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;color:#8b949e;font-size:10px">
+          <div style="color:#e6edf3;margin-bottom:3px">Live State</div>
+          <div>|ψ⟩ = α|0⟩ + β|1⟩</div>
+          <div style="color:#58a6ff;margin-top:3px">θ=0.52 φ=1.23</div>
+          <div style="margin-top:3px">P₀=0.73 P₁=0.27</div>
+        </div>
+      </div>
+      <!-- Gate toolbar -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;display:flex;gap:5px;justify-content:center;flex-wrap:wrap">
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">H</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">X</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Y</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Z</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Rx(θ)</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">S</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">T</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Explanation → Sphere+State → Gates</h3>
+      <p>Context-first. Beginner reads the explanation, then sees the sphere alongside live state, then applies gates. Guided learning flow.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:12px;background:#0d1117;border-radius:8px;font-family:monospace;font-size:11px;color:#e6edf3">
+      <!-- Nav -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px 10px;margin-bottom:6px;color:#e6edf3;font-size:10px">
+        ⬛ QuantumViz &nbsp;&nbsp; Bloch Sphere &nbsp; Circuits &nbsp; Algorithms
+      </div>
+      <!-- Gate toolbar -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;margin-bottom:6px;display:flex;gap:5px;justify-content:center;flex-wrap:wrap">
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">H</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">X</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Y</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Z</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Rx(θ)</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">Ry(θ)</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">S</span>
+        <span style="background:#21262d;border:1px solid #30363d;padding:3px 8px;border-radius:4px;font-size:10px">T</span>
+      </div>
+      <!-- Sphere -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;height:90px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;color:#8b949e;font-size:11px">
+        🌐 Bloch Sphere (drag to rotate)
+      </div>
+      <!-- State + history -->
+      <div style="display:flex;gap:6px;margin-bottom:6px">
+        <div style="flex:1;background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;color:#8b949e;font-size:10px">
+          <span style="color:#e6edf3">State: </span>|ψ⟩ = α|0⟩ + β|1⟩ &nbsp; θ=0.52 &nbsp; φ=1.23
+        </div>
+        <div style="width:90px;background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;color:#58a6ff;font-size:10px">
+          H → X → Rx
+        </div>
+      </div>
+      <!-- Explanation -->
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px;color:#8b949e;font-size:10px">
+        📖 Explanation at the bottom...
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Gates → Sphere → State → Explanation</h3>
+      <p>Action-first for experienced users. Pick your gate, watch the sphere react, read the state, scroll for explanation.</p>
+    </div>
+  </div>
+
+</div>
+<p class="subtitle" style="margin-top:16px">Click to select, or describe what you'd like adjusted.</p>
