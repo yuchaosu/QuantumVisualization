@@ -1,7 +1,6 @@
 // src/lib/tensorNetwork.ts
-import type { GateType } from './quantum'
-
-export type Complex = { re: number; im: number }
+import type { GateType, Complex } from './quantum'
+export type { Complex }
 export type QubitId = number  // 0-indexed
 
 export type CircuitGate =
