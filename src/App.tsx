@@ -3,7 +3,9 @@ import { useReducer, useCallback } from 'react'
 import type { Complex } from './lib/quantum'
 import { applyGate } from './lib/quantum'
 import type { GateType } from './lib/quantum'
+import { toBlochAngles } from './lib/quantum'
 import NavBar from './components/NavBar/NavBar'
+import BlochSphere from './components/BlochSphere/BlochSphere'
 import styles from './App.module.css'
 
 export type HistoryEntry = {
@@ -74,13 +76,17 @@ export default function App() {
   const handleUndo = useCallback(() => dispatch({ type: 'UNDO' }), [])
   const handleReset = useCallback(() => dispatch({ type: 'RESET' }), [])
 
+  const { theta, phi } = toBlochAngles(state.alpha, state.beta)
+
   return (
     <div className={styles.app}>
       {/* Row 1 */}
       <NavBar />
 
-      {/* Row 2: BlochSphere — placeholder */}
-      <div className={styles.sphereRow}>SPHERE</div>
+      {/* Row 2: BlochSphere */}
+      <div className={styles.sphereRow}>
+        <BlochSphere theta={theta} phi={phi} />
+      </div>
 
       {/* Row 3: GateControls — placeholder */}
       <div>GATES</div>
