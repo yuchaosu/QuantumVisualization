@@ -32,7 +32,7 @@ Five vertical rows, stacked top to bottom:
 
 ## Architecture
 
-**Stack:** React 18, Vite 5, TypeScript, Three.js 0.160.x, React Three Fiber v8 (`@react-three/fiber`), `@react-three/drei` v9, GSAP 3.x (animation), KaTeX 0.16.x (matrix rendering), Vitest 2.x (testing).
+**Stack:** React 18, Vite 5, TypeScript, Three.js 0.160.x, React Three Fiber v8 (`@react-three/fiber`), `@react-three/drei@9.105.x`, GSAP 3.12.x (animation), KaTeX 0.16.x (matrix rendering), Vitest 2.x (testing).
 
 No backend. All quantum math runs client-side. No persistence — state resets on refresh.
 
@@ -68,8 +68,8 @@ src/
 
 ### GateControls (Row 3)
 - Gate buttons in a single horizontal scrollable row: H, X, Y, Z, S, T, Rx(θ), Ry(θ), Rz(θ)
-- Rx/Ry/Rz: clicking opens an inline angle input (slider + number field); range `[−2π, 2π]`, step `0.01`, default `Math.PI / 2` (≈ 1.5708); a "Apply" button confirms
-- Operation history displayed as a sequence of individual chip elements separated by `→` arrows: a fixed `|0⟩` chip first, then one chip per applied gate. Each chip shows the gate name; Rx/Ry/Rz chips include the angle rounded to 2 decimal places, e.g. `Rx(1.57)`. Example: `|0⟩ → H → X → Rx(1.57)`
+- Rx/Ry/Rz: clicking opens an inline angle input (slider + number field); range `[−2π, 2π]`, step `0.01`, default `Math.PI / 2` (≈ 1.5708); an "Apply" button confirms and closes the input. The input also closes on Escape or on clicking a different gate button (without applying).
+- Operation history displayed as a sequence of individual chip elements separated by `→` arrows: a fixed `|0⟩` chip first, then one chip per applied gate. Each chip shows the gate name; Rx/Ry/Rz chips include the angle rounded to 2 decimal places, e.g. `Rx(1.57)`. Example: `|0⟩ → H → X → Rx(1.57)`. No maximum history length; the row scrolls horizontally. Memory is not a concern at typical interactive usage.
 - **Undo** button removes the last gate chip and restores the previous state. If a GSAP animation is in progress when Undo is clicked, kill it immediately and snap the arrow to the restored state without animation.
 - **Reset** button clears all gate chips and returns to |0⟩
 
@@ -99,7 +99,7 @@ The qubit state is stored internally as complex amplitudes `(alpha, beta): [Comp
 `(theta, phi)` are derived from `(alpha, beta)` for display only:
 - `theta = 2 * acos(clamp(|alpha|, 0, 1))` — clamped (not periodic; valid range is [0, π])
 - `phi`: computed as `arg(beta) - arg(alpha)` where `arg()` returns a value in `(−π, π]`, then modular-normalized to `[0, 2π]` using `((value % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)` — modular normalization (not clamping) because phi is periodic
-- Special cases: when `|alpha| = 0` (state is |1⟩), `phi = arg(beta)` then normalize; when `|beta| = 0` (state is |0⟩), `phi = 0`
+- Special cases: when `|alpha| = 0` (pole |1⟩), `phi = 0` (global phase of `beta` is discarded — phi is conventional/arbitrary at the south pole); when `|beta| = 0` (pole |0⟩), `phi = 0`
 
 This ensures gate math is correct (e.g., H applied twice reliably returns to the original state within floating-point tolerance).
 
@@ -133,7 +133,7 @@ App state updated; theta/phi derived for BlochSphere + StateReadout
 BlochSphere animates arrow, StateReadout updates, Explanation switches content
 ```
 
-- **Undo:** pop last `HistoryEntry` (call it `popped`). Restore `alpha` and `beta` from `popped.alpha` / `popped.beta` — these are the state values *before* `popped.gate` was applied, i.e., the state after all previous gates. Set `lastGate` to `history[history.length - 1].gate` (the gate of the new last remaining entry), or `null` if history is now empty. This correctly shows the Explanation for the gate that produced the now-current state.
+- **Undo:** pop last `HistoryEntry` (call it `popped`). Restore `alpha` and `beta` from `popped.alpha` / `popped.beta` — these are the state values *before* `popped.gate` was applied. Then: if `history` is now empty, set `lastGate = null`; otherwise set `lastGate = history[history.length - 1].gate`. This correctly shows the Explanation for the gate that produced the now-current state.
 - **Reset:** clear history, set `alpha = {re:1, im:0}`, `beta = {re:0, im:0}` (|0⟩), `lastGate = null`
 
 ---
