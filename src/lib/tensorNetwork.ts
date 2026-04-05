@@ -194,11 +194,14 @@ export function circuitToTensorNetwork(gates: CircuitGate[], numQubits: number):
 function parseAngle(raw: string): number | null {
   const s = raw.trim().replace(/π/g, 'pi')
   if (s === 'pi') return Math.PI
-  const piDiv  = /^pi\/(\d+(?:\.\d+)?)$/.exec(s)
+  if (s === '-pi') return -Math.PI
+  const piDiv    = /^pi\/(\d+(?:\.\d+)?)$/.exec(s)
   if (piDiv) return Math.PI / parseFloat(piDiv[1])
-  const nPi    = /^(\d+(?:\.\d+)?)\*pi$/.exec(s)
+  const negPiDiv = /^-pi\/(\d+(?:\.\d+)?)$/.exec(s)
+  if (negPiDiv) return -Math.PI / parseFloat(negPiDiv[1])
+  const nPi    = /^(-?\d+(?:\.\d+)?)\*pi$/.exec(s)
   if (nPi) return parseFloat(nPi[1]) * Math.PI
-  const nPiDiv = /^(\d+(?:\.\d+)?)\*pi\/(\d+(?:\.\d+)?)$/.exec(s)
+  const nPiDiv = /^(-?\d+(?:\.\d+)?)\*pi\/(\d+(?:\.\d+)?)$/.exec(s)
   if (nPiDiv) return parseFloat(nPiDiv[1]) * Math.PI / parseFloat(nPiDiv[2])
   const num = parseFloat(s)
   return isNaN(num) ? null : num

@@ -214,4 +214,18 @@ describe('parseCircuitCode', () => {
     expect(error).not.toBeNull()
     expect(gates).toHaveLength(0)
   })
+
+  it('parses negative angle Rz(0,-pi/2)', () => {
+    const { gates, error } = parseCircuitCode('Rz(0,-pi/2)')
+    expect(error).toBeNull()
+    const g = gates[0] as Extract<CircuitGate, { type:'single' }>
+    expect(Math.abs((g.angle ?? 0) - (-Math.PI / 2))).toBeLessThan(1e-10)
+  })
+
+  it('parses negative coefficient angle Rx(0,-2*pi)', () => {
+    const { gates, error } = parseCircuitCode('Rx(0,-2*pi)')
+    expect(error).toBeNull()
+    const g = gates[0] as Extract<CircuitGate, { type:'single' }>
+    expect(Math.abs((g.angle ?? 0) - (-2 * Math.PI))).toBeLessThan(1e-10)
+  })
 })
