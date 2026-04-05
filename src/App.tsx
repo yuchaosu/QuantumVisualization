@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useReducer, useCallback } from 'react'
+import { useReducer, useCallback, useState, useEffect } from 'react'
 import type { Complex } from './lib/quantum'
 import { applyGate } from './lib/quantum'
 import type { GateType } from './lib/quantum'
@@ -37,6 +37,8 @@ const initialState: AppState = {
   lastGate: null,
 }
 
+const THEME_STORAGE_KEY = 'qv-theme'
+
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'APPLY_GATE': {
@@ -72,6 +74,28 @@ function reducer(state: AppState, action: Action): AppState {
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  // Initialize theme from localStorage (fall back to 'dark')
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY)
+    return stored === 'light' ? 'light' : 'dark'
+  })
+
+  // Apply theme to <html> whenever it changes.
+  // Dark mode removes the attribute entirely — dark is the :root default,
+  // so no attribute is needed (removing is cleaner than setting to 'dark').
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light')
+    } else {
+      document.documentElement.removeAttribute('data-theme')
+    }
+    localStorage.setItem(THEME_STORAGE_KEY, theme)
+  }, [theme])
+
+  const handleToggleTheme = useCallback(() => {
+    setTheme(t => (t === 'dark' ? 'light' : 'dark'))
+  }, [])
+
   const handleApplyGate = useCallback((gate: GateType, angle?: number) => {
     dispatch({ type: 'APPLY_GATE', gate, angle })
   }, [])
@@ -84,11 +108,11 @@ export default function App() {
   return (
     <div className={styles.app}>
       {/* Row 1 */}
-      <NavBar />
+      <NavBar theme={theme} onToggleTheme={handleToggleTheme} />
 
       {/* Row 2: BlochSphere */}
       <div className={styles.sphereRow}>
-        <BlochSphere theta={theta} phi={phi} />
+        <BlochSphere theta={theta} phi={phi} theme={theme} />
       </div>
 
       {/* Row 3 */}
