@@ -32,8 +32,10 @@ export default function GateControls({ history, onApplyGate, onUndo, onReset }: 
 
   const handleGateClick = useCallback((gate: GateType) => {
     if (isRotation(gate)) {
-      setOpenGate(prev => (prev === gate ? null : gate))
-      setAngle(Math.PI / 2)
+      setOpenGate(prev => {
+        if (prev !== gate) setAngle(Math.PI / 2)  // reset only when opening a new gate
+        return prev === gate ? null : gate
+      })
     } else {
       setOpenGate(null)
       onApplyGate(gate)
@@ -42,7 +44,8 @@ export default function GateControls({ history, onApplyGate, onUndo, onReset }: 
 
   const handleApply = useCallback(() => {
     if (!openGate) return
-    onApplyGate(openGate, angle)
+    const clamped = Math.max(-2 * Math.PI, Math.min(2 * Math.PI, angle))
+    onApplyGate(openGate, clamped)
     setOpenGate(null)
   }, [openGate, angle, onApplyGate])
 
@@ -91,12 +94,12 @@ export default function GateControls({ history, onApplyGate, onUndo, onReset }: 
             min={-2 * Math.PI}
             max={2 * Math.PI}
             step={0.01}
-            value={angle.toFixed(4)}
+            value={angle}
             onChange={e => setAngle(Number(e.target.value))}
           />
           <button className={styles.applyBtn} onClick={handleApply}>Apply</button>
           <button
-            className={styles.undoBtn}
+            className={styles.cancelBtn}
             onClick={() => setOpenGate(null)}
             title="Cancel (Esc)"
           >✕</button>

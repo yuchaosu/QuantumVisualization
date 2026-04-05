@@ -127,3 +127,23 @@
   color: var(--text-primary);
   border-color: var(--text-primary);
 }
+
+.undoBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
