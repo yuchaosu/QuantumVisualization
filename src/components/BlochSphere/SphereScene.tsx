@@ -4,6 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import { Html, Line, OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import gsap from 'gsap'
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 
 type Props = {
   theta: number
@@ -26,7 +27,7 @@ function blochToCartesian(theta: number, phi: number): [number, number, number] 
 export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied }: Props) {
   const arrowGroupRef = useRef<THREE.Group>(null)
   const cameraRef = useRef<THREE.Camera | null>(null)
-  const controlsRef = useRef<any>(null)
+  const controlsRef = useRef<OrbitControlsImpl | null>(null)
 
   // Animated display angles (GSAP tweens these)
   const displayRef = useRef({ theta, phi })
@@ -34,9 +35,12 @@ export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied 
   // When theta/phi change, tween to new value
   useEffect(() => {
     gsap.killTweensOf(displayRef.current)
+    // Normalize phi delta to [-π, π] so the arrow always takes the short arc
+    const deltaPhi = ((phi - displayRef.current.phi + Math.PI) % (2 * Math.PI)) - Math.PI
+    const targetPhi = displayRef.current.phi + deltaPhi
     gsap.to(displayRef.current, {
       theta,
-      phi,
+      phi: targetPhi,
       duration: 0.4,
       ease: 'power2.inOut',
     })
@@ -55,11 +59,8 @@ export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied 
       gsap.to(cam.position, { x: 0, y: 0, z: 3, duration: 0.6, ease: 'power2.inOut',
         onUpdate: () => controls.update() })
     } else if (cameraPreset === 'free') {
-      const r = 3
       gsap.to(cam.position, {
-        x: r * Math.sin(Math.PI / 4) * Math.cos(Math.PI / 4),
-        y: r * Math.cos(Math.PI / 4),
-        z: r * Math.sin(Math.PI / 4) * Math.sin(Math.PI / 4),
+        x: 1.5, y: 1.5, z: 1.5,
         duration: 0.6, ease: 'power2.inOut',
         onUpdate: () => controls.update(),
       })
@@ -75,6 +76,7 @@ export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied 
     if (!arrowGroupRef.current) return
     const { theta: t, phi: p } = displayRef.current
     const [x, y, z] = blochToCartesian(t, p)
+    arrowGroupRef.current.up.set(0, 0, 1)
     arrowGroupRef.current.lookAt(x, y, z)
   })
 
@@ -108,7 +110,7 @@ export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied 
 
   return (
     <>
-      <OrbitControls ref={controlsRef} enablePan={false} />
+      <OrbitControls ref={controlsRef as React.RefObject<OrbitControlsImpl>} enablePan={false} />
       <ambientLight intensity={0.5} />
 
       {/* Sphere — semi-transparent at 30% opacity */}
