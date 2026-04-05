@@ -136,10 +136,10 @@ export default function SphereScene({ theta, phi, vectorColor, labelColor, gridC
       {/* Axes — one Line per axis, labels at each end */}
       {axes.map((axis, i) => (
         <group key={i}>
-          <Line points={axis.points} color={gridColor} lineWidth={1} />
+          <Line points={axis.points} color={gridColor} lineWidth={2} />
           {axis.labels.map(lbl => (
             <Html key={lbl.text} position={lbl.pos} center>
-              <span style={{ color: labelColor, fontSize: 12, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+              <span style={{ color: labelColor, fontSize: 13, fontFamily: 'monospace', whiteSpace: 'nowrap', fontWeight: 'bold', textShadow: '0 0 4px rgba(0,0,0,0.8)' }}>
                 {lbl.text}
               </span>
             </Html>
