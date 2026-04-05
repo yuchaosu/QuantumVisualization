@@ -9,6 +9,7 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 type Props = {
   theta: number
   phi: number
+  vectorColor: string
   cameraPreset: 'top' | 'front' | 'free' | null
   onPresetApplied: () => void
 }
@@ -24,7 +25,7 @@ function blochToCartesian(theta: number, phi: number): [number, number, number] 
   ]
 }
 
-export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied }: Props) {
+export default function SphereScene({ theta, phi, vectorColor, cameraPreset, onPresetApplied }: Props) {
   const arrowGroupRef = useRef<THREE.Group>(null)
   const cameraRef = useRef<THREE.Camera | null>(null)
   const controlsRef = useRef<OrbitControlsImpl | null>(null)
@@ -113,13 +114,13 @@ export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied 
       <OrbitControls ref={controlsRef as React.RefObject<OrbitControlsImpl>} enablePan={false} />
       <ambientLight intensity={0.5} />
 
-      {/* Sphere — semi-transparent at 30% opacity */}
+      {/* Sphere — ghost outline at 15% opacity */}
       <mesh>
         <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial
           color="#58a6ff"
           transparent
-          opacity={0.30}
+          opacity={0.15}
           wireframe={false}
           side={THREE.DoubleSide}
         />
@@ -156,13 +157,13 @@ export default function SphereScene({ theta, phi, cameraPreset, onPresetApplied 
         {/* Shaft */}
         <mesh position={[0, 0, 0.45]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.025, 0.025, 0.9, 8]} />
-          <meshStandardMaterial color="#58a6ff" />
+          <meshStandardMaterial color={vectorColor} />
         </mesh>
         {/* Arrowhead cone — tip points in +Z direction (cone apex is at +Y in local frame,
             which after the -π/2 X rotation maps to +Z) */}
         <mesh position={[0, 0, 0.975]} rotation={[Math.PI / 2, 0, 0]}>
           <coneGeometry args={[0.07, 0.15, 8]} />
-          <meshStandardMaterial color="#58a6ff" />
+          <meshStandardMaterial color={vectorColor} />
         </mesh>
       </group>
     </>

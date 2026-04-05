@@ -4,14 +4,20 @@ import { Canvas } from '@react-three/fiber'
 import SphereScene from './SphereScene'
 import styles from './BlochSphere.module.css'
 
+const VECTOR_COLORS = {
+  dark: '#00d4ff',
+  light: '#005bb5',
+} as const
+
 type Preset = 'top' | 'front' | 'free' | null
 
 type Props = {
   theta: number
   phi: number
+  theme: 'dark' | 'light'
 }
 
-export default function BlochSphere({ theta, phi }: Props) {
+export default function BlochSphere({ theta, phi, theme }: Props) {
   const [preset, setPreset] = useState<Preset>(null)
   const handlePresetApplied = useCallback(() => setPreset(null), [])
 
@@ -21,6 +27,7 @@ export default function BlochSphere({ theta, phi }: Props) {
         <SphereScene
           theta={theta}
           phi={phi}
+          vectorColor={VECTOR_COLORS[theme]}
           cameraPreset={preset}
           onPresetApplied={handlePresetApplied}
         />
