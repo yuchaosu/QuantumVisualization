@@ -8,6 +8,7 @@ import NavBar from './components/NavBar/NavBar'
 import BlochSphere from './components/BlochSphere/BlochSphere'
 import GateControls from './components/GateControls/GateControls'
 import StateReadout from './components/StateReadout/StateReadout'
+import Explanation from './components/Explanation/Explanation'
 import styles from './App.module.css'
 
 export type HistoryEntry = {
@@ -101,8 +102,8 @@ export default function App() {
       {/* Row 4 */}
       <StateReadout alpha={state.alpha} beta={state.beta} theta={theta} phi={phi} />
 
-      {/* Row 5: Explanation — placeholder */}
-      <div>EXPLANATION</div>
+      {/* Row 5 */}
+      <Explanation lastGate={state.lastGate} />
     </div>
   )
 }
