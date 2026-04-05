@@ -1,4 +1,5 @@
-import { getInitialState, getAmplitudeEntries } from '../../src/lib/tensorNetwork'
+import { getInitialState, getAmplitudeEntries, applyCircuitGate } from '../../src/lib/tensorNetwork'
+import type { Complex } from '../../src/lib/tensorNetwork'
 
 describe('getInitialState', () => {
   it('returns 2^n amplitudes', () => {
@@ -29,5 +30,63 @@ describe('getAmplitudeEntries', () => {
     expect(entries[0].magnitude).toBeCloseTo(1)
     expect(entries[0].probSquared).toBeCloseTo(1)
     expect(entries[1].magnitude).toBeCloseTo(0)
+  })
+})
+
+const near = (a: number, b: number) => Math.abs(a - b) < 1e-10
+
+describe('applyCircuitGate', () => {
+  it('H on q0 of 2-qubit |00⟩ → (|00⟩+|10⟩)/√2', () => {
+    const s = getInitialState(2)
+    const r = applyCircuitGate(s, { id:'g1', type:'single', gate:'H', qubit:0, step:0 }, 2)
+    expect(near(r[0].re, 1/Math.SQRT2)).toBe(true)
+    expect(near(r[1].re, 0)).toBe(true)
+    expect(near(r[2].re, 1/Math.SQRT2)).toBe(true)
+    expect(near(r[3].re, 0)).toBe(true)
+  })
+
+  it('X on q1 of 2-qubit |00⟩ → |01⟩ (index 1)', () => {
+    const s = getInitialState(2)
+    const r = applyCircuitGate(s, { id:'g1', type:'single', gate:'X', qubit:1, step:0 }, 2)
+    expect(near(r[0].re, 0)).toBe(true)
+    expect(near(r[1].re, 1)).toBe(true)
+  })
+
+  it('CNOT(0→1) on |10⟩ → |11⟩', () => {
+    const s: Complex[] = [{re:0,im:0},{re:0,im:0},{re:1,im:0},{re:0,im:0}]
+    const r = applyCircuitGate(s, { id:'g1', type:'cnot', control:0, target:1, step:0 }, 2)
+    expect(near(r[2].re, 0)).toBe(true)
+    expect(near(r[3].re, 1)).toBe(true)
+  })
+
+  it('CNOT on |00⟩ → |00⟩ (control=0, no-op)', () => {
+    const s = getInitialState(2)
+    const r = applyCircuitGate(s, { id:'g1', type:'cnot', control:0, target:1, step:0 }, 2)
+    expect(near(r[0].re, 1)).toBe(true)
+    expect(near(r[1].re, 0)).toBe(true)
+  })
+
+  it('H then CNOT creates Bell state (|00⟩+|11⟩)/√2', () => {
+    let s = getInitialState(2)
+    s = applyCircuitGate(s, { id:'g1', type:'single', gate:'H', qubit:0, step:0 }, 2)
+    s = applyCircuitGate(s, { id:'g2', type:'cnot', control:0, target:1, step:1 }, 2)
+    expect(near(s[0].re, 1/Math.SQRT2)).toBe(true)
+    expect(near(s[1].re, 0)).toBe(true)
+    expect(near(s[2].re, 0)).toBe(true)
+    expect(near(s[3].re, 1/Math.SQRT2)).toBe(true)
+  })
+
+  it('SWAP(0,1) on |10⟩ → |01⟩', () => {
+    const s: Complex[] = [{re:0,im:0},{re:0,im:0},{re:1,im:0},{re:0,im:0}]
+    const r = applyCircuitGate(s, { id:'g1', type:'swap', qubit0:0, qubit1:1, step:0 }, 2)
+    expect(near(r[1].re, 1)).toBe(true)
+    expect(near(r[2].re, 0)).toBe(true)
+  })
+
+  it('Z on |0⟩ leaves state unchanged', () => {
+    const s = getInitialState(1)
+    const r = applyCircuitGate(s, { id:'g1', type:'single', gate:'Z', qubit:0, step:0 }, 1)
+    expect(near(r[0].re, 1)).toBe(true)
+    expect(near(r[1].re, 0)).toBe(true)
   })
 })
