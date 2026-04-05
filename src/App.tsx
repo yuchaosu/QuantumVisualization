@@ -6,6 +6,7 @@ import type { GateType } from './lib/quantum'
 import { toBlochAngles } from './lib/quantum'
 import NavBar from './components/NavBar/NavBar'
 import BlochSphere from './components/BlochSphere/BlochSphere'
+import GateControls from './components/GateControls/GateControls'
 import styles from './App.module.css'
 
 export type HistoryEntry = {
@@ -88,8 +89,13 @@ export default function App() {
         <BlochSphere theta={theta} phi={phi} />
       </div>
 
-      {/* Row 3: GateControls — placeholder */}
-      <div>GATES</div>
+      {/* Row 3 */}
+      <GateControls
+        history={state.history}
+        onApplyGate={handleApplyGate}
+        onUndo={handleUndo}
+        onReset={handleReset}
+      />
 
       {/* Row 4: StateReadout — placeholder */}
       <div>STATE</div>
