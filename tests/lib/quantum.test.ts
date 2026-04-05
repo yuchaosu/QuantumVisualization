@@ -2,11 +2,6 @@
 import { describe, it, expect } from 'vitest'
 import { applyGate, toBlochAngles } from '../../src/lib/quantum'
 
-const ZERO = { re: 1, im: 0 }   // |0⟩: alpha=1, beta=0
-const ONE  = { re: 0, im: 0 }   // used as beta for |0⟩
-
-const I_STATE = { re: 1, im: 0 } // will vary per test
-
 const TOL = 1e-10
 const near = (a: number, b: number) => Math.abs(a - b) < TOL
 
@@ -32,10 +27,10 @@ describe('toBlochAngles', () => {
 })
 
 describe('applyGate', () => {
-  it('X on |0⟩ gives |1⟩ (theta=π)', () => {
+  it('X on |0⟩ gives |1⟩', () => {
     const [a, b] = applyGate({ re: 1, im: 0 }, { re: 0, im: 0 }, 'X')
-    expect(near(Math.abs(a.re), 0)).toBe(true)
-    expect(near(Math.abs(b.re), 1)).toBe(true)
+    expect(near(a.re, 0) && near(a.im, 0)).toBe(true)
+    expect(near(b.re, 1) && near(b.im, 0)).toBe(true)
   })
 
   it('Z on |0⟩ leaves state unchanged', () => {
@@ -55,11 +50,10 @@ describe('applyGate', () => {
 
   it('Ry(π) is equivalent to X gate on |0⟩ (up to global phase)', () => {
     const [a1, b1] = applyGate({ re: 1, im: 0 }, { re: 0, im: 0 }, 'Ry', Math.PI)
-    const [a2, b2] = applyGate({ re: 1, im: 0 }, { re: 0, im: 0 }, 'X')
-    // Both should put the state near |1⟩: |alpha| ≈ 0, |beta| ≈ 1
+    // Ry(π) on |0⟩ should give |1⟩ up to global phase: |alpha| ≈ 0, |beta| ≈ 1
     const mag1alpha = Math.sqrt(a1.re**2 + a1.im**2)
-    const mag2alpha = Math.sqrt(a2.re**2 + a2.im**2)
+    const mag1beta  = Math.sqrt(b1.re**2 + b1.im**2)
     expect(near(mag1alpha, 0)).toBe(true)
-    expect(near(mag2alpha, 0)).toBe(true)
+    expect(near(mag1beta, 1)).toBe(true)
   })
 })

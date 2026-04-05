@@ -98,6 +98,10 @@ export function applyGate(
         { re: 0, im: 0 },     expI(th / 2),
         alpha, beta
       )
+    default: {
+      const _exhaustive: never = gate
+      throw new Error(`Unknown gate: ${_exhaustive}`)
+    }
   }
 }
 
