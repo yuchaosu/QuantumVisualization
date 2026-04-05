@@ -5,8 +5,8 @@ import SphereScene from './SphereScene'
 import styles from './BlochSphere.module.css'
 
 const VECTOR_COLORS = {
-  dark: '#00d4ff',
-  light: '#005bb5',
+  dark:  { vector: '#00d4ff', label: '#8b949e', grid: '#444c56', wireframe: '#30363d' },
+  light: { vector: '#005bb5', label: '#6b5d4a', grid: '#b8a898', wireframe: '#c8bfa8' },
 } as const
 
 type Preset = 'top' | 'front' | 'free' | null
@@ -27,7 +27,10 @@ export default function BlochSphere({ theta, phi, theme }: Props) {
         <SphereScene
           theta={theta}
           phi={phi}
-          vectorColor={VECTOR_COLORS[theme]}
+          vectorColor={VECTOR_COLORS[theme].vector}
+          labelColor={VECTOR_COLORS[theme].label}
+          gridColor={VECTOR_COLORS[theme].grid}
+          wireframeColor={VECTOR_COLORS[theme].wireframe}
           cameraPreset={preset}
           onPresetApplied={handlePresetApplied}
         />

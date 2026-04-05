@@ -10,6 +10,9 @@ type Props = {
   theta: number
   phi: number
   vectorColor: string
+  labelColor: string
+  gridColor: string
+  wireframeColor: string
   cameraPreset: 'top' | 'front' | 'free' | null
   onPresetApplied: () => void
 }
@@ -25,7 +28,7 @@ function blochToCartesian(theta: number, phi: number): [number, number, number] 
   ]
 }
 
-export default function SphereScene({ theta, phi, vectorColor, cameraPreset, onPresetApplied }: Props) {
+export default function SphereScene({ theta, phi, vectorColor, labelColor, gridColor, wireframeColor, cameraPreset, onPresetApplied }: Props) {
   const arrowGroupRef = useRef<THREE.Group>(null)
   const cameraRef = useRef<THREE.Camera | null>(null)
   const controlsRef = useRef<OrbitControlsImpl | null>(null)
@@ -127,16 +130,16 @@ export default function SphereScene({ theta, phi, vectorColor, cameraPreset, onP
       </mesh>
       <mesh>
         <sphereGeometry args={[1, 16, 16]} />
-        <meshStandardMaterial color="#30363d" wireframe transparent opacity={0.3} />
+        <meshStandardMaterial color={wireframeColor} wireframe transparent opacity={0.3} />
       </mesh>
 
       {/* Axes — one Line per axis, labels at each end */}
       {axes.map((axis, i) => (
         <group key={i}>
-          <Line points={axis.points} color="#444c56" lineWidth={1} />
+          <Line points={axis.points} color={gridColor} lineWidth={1} />
           {axis.labels.map(lbl => (
             <Html key={lbl.text} position={lbl.pos} center>
-              <span style={{ color: '#8b949e', fontSize: 12, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+              <span style={{ color: labelColor, fontSize: 12, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                 {lbl.text}
               </span>
             </Html>
@@ -145,7 +148,7 @@ export default function SphereScene({ theta, phi, vectorColor, cameraPreset, onP
       ))}
 
       {/* Equator ring */}
-      <Line points={equatorPoints} color="#444c56" lineWidth={1} />
+      <Line points={equatorPoints} color={gridColor} lineWidth={1} />
 
       {/* State vector arrow — shaft + cone arrowhead along local +Z axis.
           lookAt() points the group's +Z toward the Bloch surface point.
