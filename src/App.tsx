@@ -10,6 +10,7 @@ import GateControls from './components/GateControls/GateControls'
 import StateReadout from './components/StateReadout/StateReadout'
 import Explanation from './components/Explanation/Explanation'
 import CircuitPage from './components/CircuitPage/CircuitPage'
+import AlgorithmPage from './components/AlgorithmPage/AlgorithmPage'
 import styles from './App.module.css'
 
 export type HistoryEntry = {
@@ -82,7 +83,7 @@ export default function App() {
     return stored === 'light' ? 'light' : 'dark'
   })
 
-  const [page, setPage] = useState<'bloch' | 'circuits'>(() => {
+  const [page, setPage] = useState<'bloch' | 'circuits' | 'algorithms'>(() => {
     const stored = localStorage.getItem(PAGE_STORAGE_KEY)
     return stored === 'circuits' ? 'circuits' : 'bloch'
   })
@@ -103,7 +104,7 @@ export default function App() {
     setTheme(t => (t === 'dark' ? 'light' : 'dark'))
   }, [])
 
-  const handleNavigate = useCallback((p: 'bloch' | 'circuits') => {
+  const handleNavigate = useCallback((p: 'bloch' | 'circuits' | 'algorithms') => {
     setPage(p)
     localStorage.setItem(PAGE_STORAGE_KEY, p)
   }, [])
@@ -146,6 +147,7 @@ export default function App() {
       </>)}
 
       {page === 'circuits' && <CircuitPage theme={theme} />}
+      {page === 'algorithms' && <AlgorithmPage theme={theme} />}
     </div>
   )
 }

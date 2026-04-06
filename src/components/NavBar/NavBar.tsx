@@ -4,8 +4,8 @@ import styles from './NavBar.module.css'
 type Props = {
   theme: 'dark' | 'light'
   onToggleTheme: () => void
-  page: 'bloch' | 'circuits'
-  onNavigate: (page: 'bloch' | 'circuits') => void
+  page: 'bloch' | 'circuits' | 'algorithms'
+  onNavigate: (page: 'bloch' | 'circuits' | 'algorithms') => void
 }
 
 export default function NavBar({ theme, onToggleTheme, page, onNavigate }: Props) {
@@ -21,7 +21,10 @@ export default function NavBar({ theme, onToggleTheme, page, onNavigate }: Props
           className={page === 'circuits' ? styles.linkActive : styles.link}
           onClick={() => onNavigate('circuits')}
         >Circuits</span>
-        <span className={styles.linkDisabled}>Algorithms</span>
+        <span
+          className={page === 'algorithms' ? styles.linkActive : styles.link}
+          onClick={() => onNavigate('algorithms')}
+        >Algorithms</span>
       </div>
       <button
         className={styles.themeToggle}
