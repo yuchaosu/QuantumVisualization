@@ -13,7 +13,7 @@
 }
 
 .title {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -28,9 +28,9 @@
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  padding: 3px 12px;
+  padding: 4px 14px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -43,7 +43,7 @@
 
 .content {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -55,5 +55,5 @@
 /* KaTeX overrides for dark theme */
 .matrixContent :global(.katex) {
   color: var(--text-primary);
-  font-size: 15px;
+  font-size: 17px;
 }

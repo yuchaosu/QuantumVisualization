@@ -12,12 +12,12 @@ type Props = {
   onRemoveGate: (id: string) => void
 }
 
-const ROW_H = 40
-const COL_W = 52
-const MARGIN_L = 36
+const ROW_H = 48
+const COL_W = 60
+const MARGIN_L = 44
 const PAD_Y = 16
-const GATE_W = 40
-const GATE_H = 32
+const GATE_W = 46
+const GATE_H = 36
 
 const GATE_COLOR: Record<string, string> = {
   H: 'var(--accent-blue)',
@@ -67,8 +67,8 @@ export default function CircuitGrid({
 
         {/* Qubit labels */}
         {Array.from({ length: numQubits }, (_, q) => (
-          <text key={q} x={MARGIN_L - 8} y={cy(q) + 4} textAnchor="end"
-            fill="var(--accent-blue)" fontSize={12} fontFamily="var(--font-mono)">q{q}</text>
+          <text key={q} x={MARGIN_L - 8} y={cy(q) + 5} textAnchor="end"
+            fill="var(--accent-blue)" fontSize={15} fontFamily="var(--font-mono)">q{q}</text>
         ))}
 
         {/* Drop/click zones for empty cells (drag and builder modes) */}
@@ -109,7 +109,7 @@ export default function CircuitGrid({
                   width={GATE_W+6} height={GATE_H+6} rx={6}
                   fill="none" stroke="var(--accent-blue)" strokeWidth={2} />}
                 <rect x={x-GATE_W/2} y={y-GATE_H/2} width={GATE_W} height={GATE_H} rx={4} fill={color} />
-                <text x={x} y={y+4} textAnchor="middle" fill="#000" fontSize={11} fontFamily="var(--font-mono)">
+                <text x={x} y={y+5} textAnchor="middle" fill="#000" fontSize={13} fontFamily="var(--font-mono)">
                   {gate.gate}{gate.angle !== undefined ? `(${gate.angle.toFixed(1)})` : ''}
                 </text>
               </g>

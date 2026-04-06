@@ -1,32 +1,30 @@
 /* src/components/TensorComponents/TensorComponents.module.css */
 .container {
-  flex: 2;
-  min-width: 160px;
-  max-width: 320px;
+  width: 100%;
+  height: 100%;
   background: var(--bg-surface);
-  border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  padding: 8px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  flex-shrink: 0;
+  align-items: center;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .toggle {
   display: flex;
-  gap: 4px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 12px;
   flex-shrink: 0;
 }
 
 .btn {
-  padding: 3px 10px;
+  padding: 6px 18px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-secondary);
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -37,10 +35,22 @@
   font-weight: 600;
 }
 
+/* Heatmap: wrapper fills remaining space, grid fits inside with correct aspect-ratio */
+.gridOuter {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .grid {
   display: grid;
-  gap: 2px;
-  flex-shrink: 0;
+  gap: 3px;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .cell {
@@ -51,50 +61,71 @@
   cursor: default;
   box-sizing: border-box;
   overflow: hidden;
+  min-width: 0;
+  min-height: 0;
 }
 
 .cellLabel {
   color: rgba(255,255,255,0.85);
   font-family: var(--font-mono);
-  font-size: 7px;
   line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 .legend {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-top: 8px;
-  font-size: 10px;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 14px;
   color: var(--text-secondary);
   flex-shrink: 0;
+  text-align: center;
+}
+
+/* Sparse: scrollable list filling remaining space */
+.sparseScroll {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sparseHeader {
-  font-size: 11px;
+  font-size: 16px;
   color: var(--text-secondary);
   font-family: var(--font-mono);
-  margin-bottom: 6px;
+  margin-bottom: 12px;
   flex-shrink: 0;
+  text-align: center;
 }
 
 .sparseRow {
   display: grid;
-  grid-template-columns: 44px 1fr 88px 36px;
+  grid-template-columns: 80px 1fr 130px 56px;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   font-family: var(--font-mono);
-  font-size: 11px;
-  margin-bottom: 4px;
+  font-size: 15px;
+  margin-bottom: 8px;
+  width: 100%;
+  max-width: 580px;
+  flex-shrink: 0;
 }
 
 .sparseBasis { color: var(--accent-blue); }
 
 .sparseBarOuter {
-  height: 8px;
+  height: 12px;
   background: var(--bg-base);
   border-radius: 3px;
   overflow: hidden;
+  min-width: 0;
 }
 
 .sparseBarFill {
@@ -103,5 +134,5 @@
   border-radius: 3px;
 }
 
-.sparseVal   { color: var(--text-primary); font-size: 10px; }
-.sparsePhase { color: var(--text-secondary); }
+.sparseVal   { color: var(--text-primary); font-size: 14px; }
+.sparsePhase { color: var(--text-secondary); font-size: 14px; text-align: right; }

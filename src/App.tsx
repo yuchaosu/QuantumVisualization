@@ -133,19 +133,16 @@ export default function App() {
           <BlochSphere theta={theta} phi={phi} theme={theme} />
         </div>
 
-        {/* Row 3 */}
-        <GateControls
-          history={state.history}
-          onApplyGate={handleApplyGate}
-          onUndo={handleUndo}
-          onReset={handleReset}
-        />
-
-        {/* Row 4 */}
-        <StateReadout alpha={state.alpha} beta={state.beta} theta={theta} phi={phi} />
-
-        {/* Row 5 */}
-        <Explanation lastGate={state.lastGate} />
+        <div className={styles.bottomPanels}>
+          <GateControls
+            history={state.history}
+            onApplyGate={handleApplyGate}
+            onUndo={handleUndo}
+            onReset={handleReset}
+          />
+          <StateReadout alpha={state.alpha} beta={state.beta} theta={theta} phi={phi} />
+          <Explanation lastGate={state.lastGate} />
+        </div>
       </>)}
 
       {page === 'circuits' && <CircuitPage theme={theme} />}

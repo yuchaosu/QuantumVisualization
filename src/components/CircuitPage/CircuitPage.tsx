@@ -293,6 +293,7 @@ type Props = { theme: 'dark' | 'light' }
 
 export default function CircuitPage({ theme: _theme }: Props) {
   const [state, dispatch] = useReducer(circuitReducer, initialCircuitState)
+  const [canvasView, setCanvasView] = useState<'circuit' | 'tensor' | 'heatmap'>('circuit')
 
   const tensorNetwork = circuitToTensorNetwork(state.gates, state.numQubits)
   const amplitudeEntries = getAmplitudeEntries(state.amplitudes, state.numQubits)
@@ -327,34 +328,51 @@ export default function CircuitPage({ theme: _theme }: Props) {
 
   return (
     <div className={styles.page}>
-      {/* Row 1: Circuit Grid */}
-      <div className={styles.circuitRow}>
-        <CircuitGrid
-          gates={state.gates}
-          numQubits={state.numQubits}
-          contractionStep={state.contractionStep}
-          inputMode={state.inputMode}
-          onDrop={handleAddGate_fromDrop}
-          onCellClick={handleCellClick}
-          onRemoveGate={id => dispatch({ type:'REMOVE_GATE', id })}
-        />
+      {/* View switcher */}
+      <div className={styles.viewTabs}>
+        {([
+          ['circuit', 'Circuit'],
+          ['tensor',  'Tensor Network'],
+          ['heatmap', 'Heatmap'],
+        ] as const).map(([key, label]) => (
+          <button
+            key={key}
+            className={`${styles.viewTab} ${canvasView === key ? styles.viewTabActive : ''}`}
+            onClick={() => setCanvasView(key)}
+          >{label}</button>
+        ))}
       </div>
 
-      {/* Row 2: Tensor Network + Components */}
-      <div className={styles.midRow}>
-        <TensorNetworkGraph
-          network={tensorNetwork}
-          numQubits={state.numQubits}
-          contractionStep={state.contractionStep}
-          maxStep={state.gates.length > 0 ? Math.max(...state.gates.map(g => g.step)) : 0}
-        />
-        <TensorComponents
-          entries={amplitudeEntries}
-          numQubits={state.numQubits}
-          view={state.componentView}
-          onToggleView={() => dispatch({ type:'SET_COMPONENT_VIEW',
-            view: state.componentView === 'heatmap' ? 'sparse' : 'heatmap' })}
-        />
+      {/* Canvas area — one view at a time */}
+      <div className={styles.canvas}>
+        {canvasView === 'circuit' && (
+          <CircuitGrid
+            gates={state.gates}
+            numQubits={state.numQubits}
+            contractionStep={state.contractionStep}
+            inputMode={state.inputMode}
+            onDrop={handleAddGate_fromDrop}
+            onCellClick={handleCellClick}
+            onRemoveGate={id => dispatch({ type:'REMOVE_GATE', id })}
+          />
+        )}
+        {canvasView === 'tensor' && (
+          <TensorNetworkGraph
+            network={tensorNetwork}
+            numQubits={state.numQubits}
+            contractionStep={state.contractionStep}
+            maxStep={state.gates.length > 0 ? Math.max(...state.gates.map(g => g.step)) : 0}
+          />
+        )}
+        {canvasView === 'heatmap' && (
+          <TensorComponents
+            entries={amplitudeEntries}
+            numQubits={state.numQubits}
+            view={state.componentView}
+            onToggleView={() => dispatch({ type:'SET_COMPONENT_VIEW',
+              view: state.componentView === 'heatmap' ? 'sparse' : 'heatmap' })}
+          />
+        )}
       </div>
 
       {/* Row 3: Toolbar */}

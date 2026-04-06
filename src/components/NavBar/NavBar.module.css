@@ -23,7 +23,8 @@
 
 .linkActive {
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 700;
   border-bottom: 2px solid var(--accent-blue);
   padding-bottom: 2px;
   cursor: default;
@@ -31,7 +32,8 @@
 
 .link {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -41,7 +43,8 @@
 
 .linkDisabled {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: not-allowed;
   position: relative;
 }

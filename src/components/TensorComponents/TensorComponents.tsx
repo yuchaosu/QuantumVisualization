@@ -1,4 +1,5 @@
 // src/components/TensorComponents/TensorComponents.tsx
+import { useEffect, useRef, useState } from 'react'
 import type { AmplitudeEntry } from '../../lib/tensorNetwork'
 import styles from './TensorComponents.module.css'
 
@@ -26,14 +27,33 @@ function fmtComplex(e: AmplitudeEntry): string {
 }
 
 export default function TensorComponents({ entries, numQubits, view, onToggleView }: Props) {
-  const cellSize = numQubits <= 4 ? 40 : numQubits <= 6 ? 24 : 8
-  const showLabel = numQubits <= 6 && cellSize >= 24
-
   const sparseEntries = [...entries]
-    .filter(e => e.probSquared > 0.001)
+    .filter(e => e.probSquared > 0)
     .sort((a, b) => b.probSquared - a.probSquared)
 
-  const cols = Math.min(entries.length, numQubits <= 3 ? entries.length : 16)
+  // Columns/rows: power-of-2 layout — 2^ceil(n/2) across, 2^floor(n/2) down
+  const cols = Math.pow(2, Math.ceil(numQubits / 2))
+  const rows = Math.pow(2, Math.floor(numQubits / 2))
+
+  // Measure actual cell size for dynamic label font
+  const gridOuterRef = useRef<HTMLDivElement>(null)
+  const [cellPx, setCellPx] = useState(40)
+
+  useEffect(() => {
+    const el = gridOuterRef.current
+    if (!el) return
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect
+      const cellW = width / cols
+      const cellH = height / rows
+      setCellPx(Math.min(cellW, cellH))
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [cols, rows])
+
+  const labelFontSize = Math.max(8, Math.min(18, cellPx * 0.32))
+  const showLabel = cellPx >= 18
 
   return (
     <div className={styles.container}>
@@ -50,24 +70,33 @@ export default function TensorComponents({ entries, numQubits, view, onToggleVie
 
       {view === 'heatmap' && (
         <>
-          <div
-            className={styles.grid}
-            style={{ gridTemplateColumns: `repeat(${cols}, ${cellSize}px)` }}
-          >
-            {entries.map(e => (
-              <div
-                key={e.index}
-                className={styles.cell}
-                style={{
-                  width: cellSize, height: cellSize,
-                  background: magnitudeToBg(e.magnitude),
-                  border: `2px solid ${phaseToBorder(e.phase)}`,
-                }}
-                title={`${e.basis}  |α|=${e.magnitude.toFixed(3)}  P=${(e.probSquared*100).toFixed(1)}%`}
-              >
-                {showLabel && <span className={styles.cellLabel}>{e.basis}</span>}
-              </div>
-            ))}
+          <div className={styles.gridOuter} ref={gridOuterRef}>
+            <div
+              className={styles.grid}
+              style={{
+                gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                gridTemplateRows: `repeat(${rows}, 1fr)`,
+                aspectRatio: `${cols} / ${rows}`,
+              }}
+            >
+              {entries.map(e => (
+                <div
+                  key={e.index}
+                  className={styles.cell}
+                  style={{
+                    background: magnitudeToBg(e.magnitude),
+                    border: `3px solid ${phaseToBorder(e.phase)}`,
+                  }}
+                  title={`${e.basis}  |α|=${e.magnitude.toFixed(3)}  P=${(e.probSquared*100).toFixed(1)}%`}
+                >
+                  {showLabel && (
+                    <span className={styles.cellLabel} style={{ fontSize: labelFontSize }}>
+                      {e.basis}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
           <div className={styles.legend}>
             <span>Magnitude: dark=0, bright=1</span>
@@ -77,9 +106,9 @@ export default function TensorComponents({ entries, numQubits, view, onToggleVie
       )}
 
       {view === 'sparse' && (
-        <>
+        <div className={styles.sparseScroll}>
           <div className={styles.sparseHeader}>
-            Showing {sparseEntries.length} of {entries.length} (threshold 0.1%)
+            {sparseEntries.length} of {entries.length} states
           </div>
           {sparseEntries.map(e => (
             <div key={e.index} className={styles.sparseRow}>
@@ -94,7 +123,7 @@ export default function TensorComponents({ entries, numQubits, view, onToggleVie
               <span className={styles.sparsePhase}>{(e.phase*180/Math.PI).toFixed(0)}°</span>
             </div>
           ))}
-        </>
+        </div>
       )}
     </div>
   )

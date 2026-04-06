@@ -70,24 +70,24 @@ export default function TensorNetworkGraph({ network, numQubits, contractionStep
 
           if (node.kind === 'ket') return (
             <g key={node.id}>
-              <circle cx={x} cy={y} r={16}
+              <circle cx={x} cy={y} r={20}
                 fill="var(--bg-surface)" stroke="var(--accent-blue)" strokeWidth={2} />
-              <text x={x} y={y+4} textAnchor="middle" fill="var(--accent-blue)"
-                fontSize={11} fontFamily="var(--font-mono)">|0⟩</text>
+              <text x={x} y={y+5} textAnchor="middle" fill="var(--accent-blue)"
+                fontSize={14} fontFamily="var(--font-mono)">|0⟩</text>
             </g>
           )
 
           if (node.kind === 'result') return (
             <g key={node.id}>
-              <circle cx={x} cy={y} r={18}
+              <circle cx={x} cy={y} r={22}
                 fill="var(--bg-surface)" stroke="var(--accent-green)" strokeWidth={2} />
-              <text x={x} y={y+4} textAnchor="middle" fill="var(--accent-green)"
-                fontSize={11} fontFamily="var(--font-mono)">|ψ⟩</text>
+              <text x={x} y={y+5} textAnchor="middle" fill="var(--accent-green)"
+                fontSize={14} fontFamily="var(--font-mono)">|ψ⟩</text>
             </g>
           )
 
           // Gate node
-          const W = 46, H = 28
+          const W = 54, H = 34
           return (
             <g key={node.id}
               opacity={contracted ? 0.35 : 1}
@@ -100,9 +100,9 @@ export default function TensorNetworkGraph({ network, numQubits, contractionStep
                 stroke={contracted ? 'var(--accent-green)' : (isTooltip ? 'var(--accent-blue)' : 'var(--border)')}
                 strokeWidth={isTooltip ? 2 : 1.5}
               />
-              <text x={x} y={y+4} textAnchor="middle"
+              <text x={x} y={y+5} textAnchor="middle"
                 fill={contracted ? 'var(--accent-green)' : 'var(--text-primary)'}
-                fontSize={11} fontFamily="var(--font-mono)">
+                fontSize={14} fontFamily="var(--font-mono)">
                 {node.label}
               </text>
             </g>
@@ -116,12 +116,12 @@ export default function TensorNetworkGraph({ network, numQubits, contractionStep
           const x = nodeX(node, effectiveMax)
           const y = nodeY(node, numQubits)
           const text = `${node.label}: rank-${node.rank}, [${node.shape.join(',')}]`
-          const tw = text.length * 6.5 + 16
+          const tw = text.length * 8.5 + 16
           return (
             <g>
-              <rect x={x + 8} y={y - 22} width={tw} height={26} rx={4}
+              <rect x={x + 8} y={y - 26} width={tw} height={30} rx={4}
                 fill="var(--bg-elevated)" stroke="var(--border)" />
-              <text x={x + 16} y={y - 5} fill="var(--text-secondary)" fontSize={11}
+              <text x={x + 16} y={y - 7} fill="var(--text-secondary)" fontSize={14}
                 fontFamily="var(--font-mono)">{text}</text>
             </g>
           )
