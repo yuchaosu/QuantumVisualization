@@ -1,0 +1,16 @@
+/* src/components/CircuitPage/CircuitPage.module.css */
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.debug {
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+}
