@@ -265,7 +265,7 @@ function CodeInput({
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       if (debounceRef.current) clearTimeout(debounceRef.current)
-      tryApply(codeText)
+      tryApply(e.currentTarget.value)
     }
   }
 

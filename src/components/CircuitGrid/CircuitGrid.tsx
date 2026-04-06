@@ -139,9 +139,13 @@ export default function CircuitGrid({
           // SWAP
           const x = cx(gate.step)
           const cy0 = cy(gate.qubit0), cy1 = cy(gate.qubit1)
+          const minY = Math.min(cy0, cy1), maxY = Math.max(cy0, cy1)
           return (
             <g key={gate.id} opacity={opacity} style={{ cursor:'pointer' }}
               onClick={() => onRemoveGate(gate.id)}>
+              {isNext && <rect x={x-GATE_W/2-3} y={minY-GATE_H/2-3}
+                width={GATE_W+6} height={maxY-minY+GATE_H+6} rx={6}
+                fill="none" stroke="var(--accent-blue)" strokeWidth={2} />}
               <line x1={x} y1={cy0} x2={x} y2={cy1}
                 stroke="var(--accent-purple)" strokeWidth={2} />
               {[cy0, cy1].map((yy, i) => (

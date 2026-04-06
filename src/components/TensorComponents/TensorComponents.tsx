@@ -20,8 +20,9 @@ function phaseToBorder(phase: number): string {
 
 function fmtComplex(e: AmplitudeEntry): string {
   const re = (e.magnitude * Math.cos(e.phase)).toFixed(3)
-  const im = Math.abs(e.magnitude * Math.sin(e.phase)).toFixed(3)
-  return `${re} ${e.phase >= 0 ? '+' : '−'} ${im}i`
+  const imVal = e.magnitude * Math.sin(e.phase)
+  const sign  = imVal >= 0 ? '+' : '−'
+  return `${re} ${sign} ${Math.abs(imVal).toFixed(3)}i`
 }
 
 export default function TensorComponents({ entries, numQubits, view, onToggleView }: Props) {
@@ -86,7 +87,7 @@ export default function TensorComponents({ entries, numQubits, view, onToggleVie
               <div className={styles.sparseBarOuter}>
                 <div
                   className={styles.sparseBarFill}
-                  style={{ width: `${e.magnitude * 100}%` }}
+                  style={{ width: `${e.probSquared * 100}%` }}
                 />
               </div>
               <span className={styles.sparseVal}>{fmtComplex(e)}</span>
