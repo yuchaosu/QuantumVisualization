@@ -1,0 +1,239 @@
+/* src/components/AlgorithmPage/AlgorithmPage.module.css */
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Algorithm selector bar */
+.selectorBar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 20px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.selectorLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.algorithmSelect {
+  padding: 5px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.algorithmDesc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.qubitBadge {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  flex-shrink: 0;
+}
+
+/* View tabs + input mode row */
+.viewRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.viewTab {
+  padding: 5px 16px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.viewTab:hover { color: var(--text-primary); border-color: var(--accent-blue); }
+
+.viewTabActive {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #000;
+}
+
+.spacer { flex: 1; }
+
+.modeBtn {
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.modeBtnActive {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+}
+
+/* Canvas */
+.canvas {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-base);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Step controls bar */
+.stepBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.stepBtn {
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.stepBtn:hover:not(:disabled) { color: var(--text-primary); border-color: var(--accent-blue); }
+.stepBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.playBtn {
+  padding: 5px 16px;
+  border: none;
+  background: var(--accent-blue);
+  color: #000;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.stepLabel {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* Bottom panels */
+.bottomRow {
+  display: flex;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  min-height: 160px;
+  max-height: 220px;
+}
+
+/* Narration panel (60%) */
+.narration {
+  flex: 3;
+  padding: 14px 20px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.narrationHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.narrationTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.narrationTabs {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.narTab {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 3px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.narTabActive {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #000;
+  font-weight: 600;
+}
+
+.narrationBody {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.narrationBody :global(.katex) {
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+/* Input panel (40%) */
+.inputPanel {
+  flex: 2;
+  background: var(--bg-base);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
