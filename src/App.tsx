@@ -85,7 +85,7 @@ export default function App() {
 
   const [page, setPage] = useState<'bloch' | 'circuits' | 'algorithms'>(() => {
     const stored = localStorage.getItem(PAGE_STORAGE_KEY)
-    return stored === 'circuits' ? 'circuits' : 'bloch'
+    return stored === 'circuits' ? 'circuits' : stored === 'algorithms' ? 'algorithms' : 'bloch'
   })
 
   // Apply theme to <html> whenever it changes.
