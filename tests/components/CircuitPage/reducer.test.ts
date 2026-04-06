@@ -104,4 +104,53 @@ describe('CircuitPage reducer', () => {
     expect(s.gates).toHaveLength(1)
     expect(s.contractionStep).toBe(0)
   })
+
+  it('SET_GATES loads a preset circuit and resets state', () => {
+    // Start with some existing gates and contraction
+    let s = dispatch(initialCircuitState, { type: 'ADD_GATE', gate: { id:'g1', type:'single', gate:'H', qubit:0, step:0 } })
+    s = dispatch(s, { type: 'CONTRACT_STEP' })
+    expect(s.contractionStep).toBe(1)
+
+    // Load 3-qubit algorithm preset
+    const newGates: import('../../../src/lib/tensorNetwork').CircuitGate[] = [
+      { id:'a0', type:'single', gate:'X', qubit:2, step:0 },
+      { id:'a1', type:'single', gate:'H', qubit:0, step:1 },
+    ]
+    s = dispatch(s, { type: 'SET_GATES', gates: newGates, numQubits: 3 })
+
+    expect(s.numQubits).toBe(3)
+    expect(s.gates).toHaveLength(2)
+    expect(s.contractionStep).toBe(0)
+    expect(s.amplitudes).toHaveLength(8) // 2^3
+    expect(s.amplitudes[0].re).toBeCloseTo(1) // |000⟩
+    expect(s.codeText).toBe('')
+    expect(s.lastGate).toBeNull()
+  })
+
+  it('UNCONTRACT_STEP is no-op at step 0', () => {
+    const s = dispatch(initialCircuitState, { type: 'ADD_GATE', gate: { id:'g1', type:'single', gate:'H', qubit:0, step:0 } })
+    const before = s.contractionStep
+    const after = dispatch(s, { type: 'UNCONTRACT_STEP' })
+    expect(after.contractionStep).toBe(before)
+  })
+
+  it('UNCONTRACT_STEP rewinds state vector correctly', () => {
+    // Apply H then H (second H is its own inverse); step back should undo second H, leaving H-only state
+    let s = dispatch(initialCircuitState, { type: 'ADD_GATE', gate: { id:'g1', type:'single', gate:'H', qubit:0, step:0 } })
+    s = dispatch(s, { type: 'ADD_GATE', gate: { id:'g2', type:'single', gate:'H', qubit:0, step:1 } })
+    s = dispatch(s, { type: 'CONTRACT_STEP' }) // apply first H
+    s = dispatch(s, { type: 'CONTRACT_STEP' }) // apply second H
+    expect(s.contractionStep).toBe(2)
+
+    // After H·H on |0⟩: H·H|0⟩ = |0⟩, so amp[0] ≈ 1
+    const ampAfterBoth = s.amplitudes[0].re // should be ~1
+
+    s = dispatch(s, { type: 'UNCONTRACT_STEP' }) // undo second H
+    expect(s.contractionStep).toBe(1)
+    // After first H only: H|0⟩ = (|0⟩+|1⟩)/√2, amp[0] = 1/√2 ≈ 0.707
+    expect(s.amplitudes[0].re).toBeCloseTo(1 / Math.SQRT2)
+    expect(s.amplitudes[0].re).not.toBeCloseTo(ampAfterBoth)
+    expect(s.lastGate).not.toBeNull()
+    expect((s.lastGate as import('../../../src/lib/tensorNetwork').CircuitGate & { gate?: string }).gate).toBe('H')
+  })
 })

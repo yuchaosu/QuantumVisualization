@@ -37,6 +37,8 @@ export type CircuitAction =
   | { type: 'CONTRACT_STEP' }
   | { type: 'CONTRACT_ALL' }
   | { type: 'RESET' }
+  | { type: 'SET_GATES';       gates: CircuitGate[]; numQubits: number }
+  | { type: 'UNCONTRACT_STEP' }
 
 // ─── Sort helpers ─────────────────────────────────────────────────────────────
 
@@ -150,6 +152,29 @@ export function circuitReducer(state: CircuitPageState, action: CircuitAction): 
         amplitudes: getInitialState(state.numQubits),
       }
 
+    case 'SET_GATES': {
+      return {
+        ...state,
+        gates: action.gates,
+        numQubits: action.numQubits,
+        contractionStep: 0,
+        amplitudes: getInitialState(action.numQubits),
+        lastGate: null,
+        codeText: '',
+      }
+    }
+
+    case 'UNCONTRACT_STEP': {
+      if (state.contractionStep === 0) return state
+      const newStep = state.contractionStep - 1
+      let amplitudes = getInitialState(state.numQubits)
+      for (let i = 0; i < newStep; i++) {
+        amplitudes = applyCircuitGate(amplitudes, state.gates[i], state.numQubits)
+      }
+      const lastGate = newStep > 0 ? state.gates[newStep - 1] : null
+      return { ...state, contractionStep: newStep, amplitudes, lastGate }
+    }
+
     default:
       return state
   }
@@ -157,7 +182,7 @@ export function circuitReducer(state: CircuitPageState, action: CircuitAction): 
 
 // ─── BuilderForm ─────────────────────────────────────────────────────────────
 
-function BuilderForm({
+export function BuilderForm({
   numQubits, currentGates, onAdd
 }: {
   numQubits: number
@@ -230,7 +255,7 @@ function BuilderForm({
 
 // ─── CodeInput ────────────────────────────────────────────────────────────────
 
-function CodeInput({
+export function CodeInput({
   codeText, numQubits, dispatch
 }: {
   codeText: string
