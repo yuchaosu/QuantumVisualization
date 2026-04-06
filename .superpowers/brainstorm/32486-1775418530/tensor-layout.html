@@ -1,0 +1,102 @@
+<h2>Tensor Contraction Page — Layout Options</h2>
+<p class="subtitle">Pick the layout that feels right for the page structure</p>
+
+<div class="cards">
+
+  <!-- Option A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="font-family:monospace;font-size:11px;line-height:1.6;background:#1a1a2e;color:#ccc;padding:10px;border-radius:6px;text-align:left">
+        <div style="background:#2a2a4a;padding:3px 8px;margin-bottom:4px;border-radius:3px;color:#58a6ff">■ NavBar — QuantumViz · Bloch Sphere · <b style="color:#fff">Tensors</b> · Algorithms</div>
+        <div style="background:#0d2137;padding:8px;margin-bottom:4px;border-radius:3px;height:90px;display:flex;align-items:center;justify-content:center;color:#58a6ff;font-size:13px;border:1px dashed #30363d">
+          🕸 Tensor Network Graph<br><span style="font-size:10px;color:#666">(interactive nodes + wires)</span>
+        </div>
+        <div style="background:#1a2a1a;padding:4px 8px;margin-bottom:4px;border-radius:3px;display:flex;gap:4px;align-items:center">
+          <span style="color:#3fb950;font-size:10px">[Drag&Drop]</span>
+          <span style="color:#666;font-size:10px">[Step Builder]</span>
+          <span style="color:#666;font-size:10px">[Code Input]</span>
+          <span style="margin-left:auto;color:#666;font-size:10px">[Step ▶] [Contract All ⚡]</span>
+        </div>
+        <div style="background:#1a1a2a;padding:6px 8px;margin-bottom:4px;border-radius:3px;height:50px;display:flex;align-items:center;justify-content:center;color:#bc8cff;font-size:11px;border:1px dashed #30363d">
+          ⬛ Tensor Grid — Heatmap ⟷ Sparse toggle
+        </div>
+        <div style="background:#2a2a3a;padding:4px 8px;border-radius:3px;color:#8b949e;font-size:10px">
+          📖 Explanation — Beginner | Math | Deeper
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Vertical Stack</h3>
+      <p>Same pattern as Bloch Sphere. Graph on top, input controls + contract buttons in the middle, tensor grid below, explanation at bottom. Simple and consistent.</p>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="font-family:monospace;font-size:11px;line-height:1.6;background:#1a1a2e;color:#ccc;padding:10px;border-radius:6px;text-align:left">
+        <div style="background:#2a2a4a;padding:3px 8px;margin-bottom:4px;border-radius:3px;color:#58a6ff">■ NavBar — QuantumViz · Bloch Sphere · <b style="color:#fff">Tensors</b> · Algorithms</div>
+        <div style="display:flex;gap:4px;margin-bottom:4px">
+          <div style="background:#0d2137;padding:6px;border-radius:3px;flex:3;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#58a6ff;font-size:11px;border:1px dashed #30363d">
+            🕸 Network Graph<br><span style="font-size:9px;color:#666">nodes + wires</span>
+          </div>
+          <div style="background:#1a1a2a;padding:6px;border-radius:3px;flex:2;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#bc8cff;font-size:11px;border:1px dashed #30363d">
+            ⬛ Tensor Grid<br><span style="font-size:9px;color:#666">heatmap / sparse</span>
+          </div>
+        </div>
+        <div style="background:#1a2a1a;padding:4px 8px;margin-bottom:4px;border-radius:3px;display:flex;gap:4px;align-items:center">
+          <span style="color:#3fb950;font-size:10px">[Drag&Drop]</span>
+          <span style="color:#666;font-size:10px">[Step Builder]</span>
+          <span style="color:#666;font-size:10px">[Code Input]</span>
+          <span style="margin-left:auto;color:#666;font-size:10px">[Step ▶] [Contract All ⚡]</span>
+        </div>
+        <div style="background:#1a2a2a;padding:4px 8px;margin-bottom:4px;border-radius:3px;height:28px;display:flex;align-items:center;color:#8b949e;font-size:10px;border:1px dashed #30363d">
+          Active input panel (changes per mode)
+        </div>
+        <div style="background:#2a2a3a;padding:4px 8px;border-radius:3px;color:#8b949e;font-size:10px">
+          📖 Explanation — Beginner | Math | Deeper
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Graph + Grid Side by Side</h3>
+      <p>Network graph and tensor grid share the top row (60/40 split). Input controls + active panel below. See both simultaneously — graph shows structure, grid shows values.</p>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="font-family:monospace;font-size:11px;line-height:1.6;background:#1a1a2e;color:#ccc;padding:10px;border-radius:6px;text-align:left">
+        <div style="background:#2a2a4a;padding:3px 8px;margin-bottom:4px;border-radius:3px;color:#58a6ff">■ NavBar — QuantumViz · Bloch Sphere · <b style="color:#fff">Tensors</b> · Algorithms</div>
+        <div style="display:flex;gap:4px;margin-bottom:4px">
+          <div style="background:#1a2a1a;padding:6px;border-radius:3px;width:90px;min-height:130px;font-size:9px;color:#3fb950;border:1px dashed #30363d">
+            <div style="margin-bottom:4px;color:#fff">Input Mode</div>
+            <div style="background:#2a3a2a;padding:2px 4px;border-radius:2px;margin-bottom:2px">Drag&Drop</div>
+            <div style="padding:2px 4px;margin-bottom:2px;color:#666">Step Build</div>
+            <div style="padding:2px 4px;margin-bottom:6px;color:#666">Code</div>
+            <div style="border-top:1px solid #333;padding-top:4px;color:#8b949e">Gates palette<br>H X Y Z<br>CNOT SWAP</div>
+          </div>
+          <div style="background:#0d2137;padding:6px;border-radius:3px;flex:1;height:130px;display:flex;align-items:center;justify-content:center;color:#58a6ff;font-size:11px;border:1px dashed #30363d;flex-direction:column">
+            🕸 Network Graph<br><span style="font-size:9px;color:#666">(main canvas)</span>
+          </div>
+          <div style="background:#1a1a2a;padding:6px;border-radius:3px;width:80px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#bc8cff;font-size:9px;border:1px dashed #30363d">
+            ⬛ Tensor<br>Grid<br><span style="color:#666">Heatmap/</span><br><span style="color:#666">Sparse</span>
+          </div>
+        </div>
+        <div style="background:#1a1a1a;padding:4px 8px;margin-bottom:4px;border-radius:3px;display:flex;justify-content:center;gap:8px;align-items:center">
+          <span style="color:#666;font-size:10px">[Step ▶]</span>
+          <span style="color:#f85149;font-size:10px">[Contract All ⚡]</span>
+        </div>
+        <div style="background:#2a2a3a;padding:4px 8px;border-radius:3px;color:#8b949e;font-size:10px">
+          📖 Explanation — Beginner | Math | Deeper
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Three-Panel (IDE style)</h3>
+      <p>Left sidebar: input mode selector + gate palette. Center: large network graph canvas. Right sidebar: tensor grid. Contraction controls at the bottom. Like a quantum IDE.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,181 @@
+<h2>Circuits Page — Layout with Circuit Grid</h2>
+<p class="subtitle">Three visualizations: Circuit Grid + Tensor Network + Tensor Components. How should they be arranged?</p>
+
+<div class="cards">
+
+  <!-- Option A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="font-family:monospace;font-size:10px;line-height:1.5;background:#1a1a2e;color:#ccc;padding:8px;border-radius:6px;text-align:left">
+        <div style="background:#2a2a4a;padding:3px 8px;margin-bottom:4px;border-radius:3px;color:#58a6ff;font-size:10px">■ NavBar · Bloch Sphere · <b style="color:#fff">Circuits</b> · Algorithms</div>
+        <!-- Circuit Grid full width -->
+        <div style="background:#0a1628;padding:5px 8px;margin-bottom:4px;border-radius:3px;border:1px dashed #30363d">
+          <div style="color:#8b949e;font-size:9px;margin-bottom:3px">Circuit Grid</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:3px">
+              <span style="color:#58a6ff;font-size:9px;width:16px">q0</span>
+              <div style="height:1px;background:#444;flex:1;position:relative">
+                <span style="position:absolute;top:-7px;left:15%;background:#58a6ff;color:#000;padding:1px 3px;border-radius:2px;font-size:8px">H</span>
+                <span style="position:absolute;top:-7px;left:40%;background:#f85149;color:#000;padding:1px 3px;border-radius:2px;font-size:8px">●</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:3px">
+              <span style="color:#58a6ff;font-size:9px;width:16px">q1</span>
+              <div style="height:1px;background:#444;flex:1;position:relative">
+                <span style="position:absolute;top:-7px;left:40%;background:#f85149;color:#000;padding:1px 3px;border-radius:2px;font-size:8px">⊕</span>
+                <span style="position:absolute;top:-7px;left:65%;background:#3fb950;color:#000;padding:1px 3px;border-radius:2px;font-size:8px">X</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:3px">
+              <span style="color:#58a6ff;font-size:9px;width:16px">q2</span>
+              <div style="height:1px;background:#444;flex:1;position:relative">
+                <span style="position:absolute;top:-7px;left:65%;background:#bc8cff;color:#000;padding:1px 3px;border-radius:2px;font-size:8px">Z</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Tensor network + tensor grid side by side -->
+        <div style="display:flex;gap:4px;margin-bottom:4px">
+          <div style="background:#0d2137;padding:5px;border-radius:3px;flex:3;height:65px;display:flex;align-items:center;justify-content:center;color:#58a6ff;font-size:10px;border:1px dashed #30363d;flex-direction:column">
+            🕸 Tensor Network<br><span style="font-size:8px;color:#666">nodes + edges</span>
+          </div>
+          <div style="background:#1a1a2a;padding:5px;border-radius:3px;flex:2;height:65px;display:flex;align-items:center;justify-content:center;color:#bc8cff;font-size:10px;border:1px dashed #30363d;flex-direction:column">
+            ⬛ Components<br><span style="font-size:8px;color:#666">heatmap/sparse</span>
+          </div>
+        </div>
+        <!-- Controls -->
+        <div style="background:#1a2a1a;padding:3px 8px;margin-bottom:4px;border-radius:3px;display:flex;gap:4px;align-items:center;font-size:9px">
+          <span style="color:#3fb950">[Drag&Drop]</span><span style="color:#666">[Builder]</span><span style="color:#666">[Code]</span>
+          <span style="margin-left:auto;color:#f85149">[Step ▶] [Contract ⚡]</span>
+        </div>
+        <div style="background:#2a2a3a;padding:3px 8px;border-radius:3px;color:#8b949e;font-size:9px">📖 Explanation — Beginner | Math | Deeper</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Circuit on Top</h3>
+      <p>Circuit Grid spans full width at the top (most prominent). Tensor Network + Components share the row below (60/40). Input controls + contraction buttons in a toolbar. Explanation at bottom.</p>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="font-family:monospace;font-size:10px;line-height:1.5;background:#1a1a2e;color:#ccc;padding:8px;border-radius:6px;text-align:left">
+        <div style="background:#2a2a4a;padding:3px 8px;margin-bottom:4px;border-radius:3px;color:#58a6ff;font-size:10px">■ NavBar · Bloch Sphere · <b style="color:#fff">Circuits</b> · Algorithms</div>
+        <div style="display:flex;gap:4px;margin-bottom:4px">
+          <!-- Left sidebar -->
+          <div style="background:#1a2a1a;padding:5px;border-radius:3px;width:70px;font-size:8px;color:#3fb950;border:1px dashed #30363d">
+            <div style="color:#fff;margin-bottom:3px">Input</div>
+            <div style="background:#2a3a2a;padding:1px 3px;border-radius:2px;margin-bottom:2px">Drag&Drop</div>
+            <div style="padding:1px 3px;margin-bottom:2px;color:#666">Builder</div>
+            <div style="padding:1px 3px;margin-bottom:5px;color:#666">Code</div>
+            <div style="border-top:1px solid #333;padding-top:3px;color:#8b949e">
+              H X Y Z<br>CNOT SWAP<br>T S Rz
+            </div>
+          </div>
+          <!-- Center: tabs -->
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;gap:2px;font-size:8px">
+              <span style="background:#58a6ff;color:#000;padding:1px 5px;border-radius:3px 3px 0 0">Circuit Grid</span>
+              <span style="background:#30363d;color:#8b949e;padding:1px 5px;border-radius:3px 3px 0 0">Tensor Net</span>
+            </div>
+            <!-- Circuit Grid tab content -->
+            <div style="background:#0a1628;padding:5px;border-radius:0 3px 3px 3px;flex:1;border:1px dashed #30363d;min-height:80px">
+              <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px">
+                <div style="display:flex;align-items:center;gap:3px">
+                  <span style="color:#58a6ff;font-size:8px;width:14px">q0</span>
+                  <div style="height:1px;background:#444;flex:1;position:relative">
+                    <span style="position:absolute;top:-7px;left:10%;background:#58a6ff;color:#000;padding:1px 3px;border-radius:2px;font-size:7px">H</span>
+                    <span style="position:absolute;top:-7px;left:35%;background:#f85149;color:#000;padding:1px 3px;border-radius:2px;font-size:7px">●</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:3px">
+                  <span style="color:#58a6ff;font-size:8px;width:14px">q1</span>
+                  <div style="height:1px;background:#444;flex:1;position:relative">
+                    <span style="position:absolute;top:-7px;left:35%;background:#f85149;color:#000;padding:1px 3px;border-radius:2px;font-size:7px">⊕</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:3px">
+                  <span style="color:#58a6ff;font-size:8px;width:14px">q2</span>
+                  <div style="height:1px;background:#444;flex:1"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Right: tensor components always visible -->
+          <div style="background:#1a1a2a;padding:5px;border-radius:3px;width:65px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#bc8cff;font-size:9px;border:1px dashed #30363d;gap:2px">
+            ⬛ Tensor<br>Components<br>
+            <span style="font-size:8px;color:#666;margin-top:2px">Heatmap ⟷<br>Sparse</span>
+          </div>
+        </div>
+        <!-- Contraction controls -->
+        <div style="background:#1a1a1a;padding:3px 8px;margin-bottom:4px;border-radius:3px;display:flex;justify-content:center;gap:8px;font-size:9px">
+          <span style="color:#666">[Step ▶]</span><span style="color:#f85149">[Contract All ⚡]</span>
+        </div>
+        <div style="background:#2a2a3a;padding:3px 8px;border-radius:3px;color:#8b949e;font-size:9px">📖 Explanation — Beginner | Math | Deeper</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Tabs: Circuit / Tensor Network</h3>
+      <p>Left sidebar with input modes + gate palette. Center panel tabs between Circuit Grid and Tensor Network (same data, two views). Tensor Components always visible on the right. IDE-style.</p>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="font-family:monospace;font-size:10px;line-height:1.5;background:#1a1a2e;color:#ccc;padding:8px;border-radius:6px;text-align:left">
+        <div style="background:#2a2a4a;padding:3px 8px;margin-bottom:4px;border-radius:3px;color:#58a6ff;font-size:10px">■ NavBar · Bloch Sphere · <b style="color:#fff">Circuits</b> · Algorithms</div>
+        <div style="display:flex;gap:4px;margin-bottom:4px">
+          <!-- Left sidebar -->
+          <div style="background:#1a2a1a;padding:5px;border-radius:3px;width:65px;font-size:8px;color:#3fb950;border:1px dashed #30363d">
+            <div style="color:#fff;margin-bottom:3px">Input</div>
+            <div style="background:#2a3a2a;padding:1px 3px;border-radius:2px;margin-bottom:2px">Drag&Drop</div>
+            <div style="padding:1px 3px;margin-bottom:2px;color:#666">Builder</div>
+            <div style="padding:1px 3px;margin-bottom:4px;color:#666">Code</div>
+            <div style="border-top:1px solid #333;padding-top:3px;color:#8b949e">
+              H X Y Z<br>CNOT<br>SWAP T S
+            </div>
+          </div>
+          <!-- Center: Circuit Grid stacked above Tensor Network -->
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px">
+            <div style="background:#0a1628;padding:4px;border-radius:3px;border:1px dashed #30363d">
+              <div style="color:#8b949e;font-size:8px;margin-bottom:3px">Circuit Grid</div>
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="display:flex;align-items:center;gap:2px">
+                  <span style="color:#58a6ff;font-size:7px;width:12px">q0</span>
+                  <div style="height:1px;background:#444;flex:1;position:relative">
+                    <span style="position:absolute;top:-6px;left:10%;background:#58a6ff;color:#000;padding:0px 2px;border-radius:2px;font-size:7px">H</span>
+                    <span style="position:absolute;top:-6px;left:40%;background:#f85149;color:#000;padding:0px 2px;border-radius:2px;font-size:7px">●</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:2px">
+                  <span style="color:#58a6ff;font-size:7px;width:12px">q1</span>
+                  <div style="height:1px;background:#444;flex:1;position:relative">
+                    <span style="position:absolute;top:-6px;left:40%;background:#f85149;color:#000;padding:0px 2px;border-radius:2px;font-size:7px">⊕</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="background:#0d2137;padding:4px;border-radius:3px;border:1px dashed #30363d;display:flex;align-items:center;justify-content:center;height:45px;color:#58a6ff;font-size:9px;flex-direction:column">
+              🕸 Tensor Network<br><span style="font-size:7px;color:#666">same circuit, graph view</span>
+            </div>
+          </div>
+          <!-- Right: tensor components -->
+          <div style="background:#1a1a2a;padding:5px;border-radius:3px;width:65px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#bc8cff;font-size:9px;border:1px dashed #30363d;gap:2px;text-align:center">
+            ⬛ Tensor<br>Components<br><span style="font-size:7px;color:#666">Heatmap/Sparse</span>
+          </div>
+        </div>
+        <div style="background:#1a1a1a;padding:3px 8px;margin-bottom:4px;border-radius:3px;display:flex;justify-content:center;gap:8px;font-size:9px">
+          <span style="color:#666">[Step ▶]</span><span style="color:#f85149">[Contract All ⚡]</span>
+        </div>
+        <div style="background:#2a2a3a;padding:3px 8px;border-radius:3px;color:#8b949e;font-size:9px">📖 Explanation — Beginner | Math | Deeper</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Both Views Always Visible</h3>
+      <p>Left sidebar with input modes + gate palette. Center shows Circuit Grid (top) and Tensor Network (bottom) simultaneously — always in sync. Tensor Components on the right. Most information-dense.</p>
+    </div>
+  </div>
+
+</div>
