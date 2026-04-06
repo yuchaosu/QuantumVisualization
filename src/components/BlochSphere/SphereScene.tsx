@@ -62,6 +62,7 @@ export default function SphereScene({
     if (!cameraPreset || !cameraRef.current || !controlsRef.current) return
     const cam = cameraRef.current
     const controls = controlsRef.current
+    gsap.killTweensOf(cam.position)
 
     if (cameraPreset === 'top') {
       gsap.to(cam.position, { x: 0, y: 3, z: 0.001, duration: 0.6, ease: 'power2.inOut',
@@ -85,6 +86,7 @@ export default function SphereScene({
     const controls = controlsRef.current
     const current = cam.position.length()
     if (current === 0) return
+    gsap.killTweensOf(cam.position)
     const scale = zoomTarget / current
     gsap.to(cam.position, {
       x: cam.position.x * scale,
