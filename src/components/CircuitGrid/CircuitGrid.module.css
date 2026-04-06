@@ -1,0 +1,16 @@
+/* src/components/CircuitGrid/CircuitGrid.module.css */
+.container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--bg-base);
+  height: 100%;
+}
+
+.svg {
+  display: block;
+}
+
+.dropZone:hover {
+  stroke: var(--accent-blue) !important;
+  stroke-opacity: 0.5;
+}

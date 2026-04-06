@@ -1,0 +1,59 @@
+.container {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  flex-shrink: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.tab {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 3px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.tabActive {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #0d1117;
+  font-weight: 600;
+}
+
+.content {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.matrixContent {
+  font-family: var(--font-mono);
+  overflow-x: auto;
+}
+
+/* KaTeX overrides for dark theme */
+.matrixContent :global(.katex) {
+  color: var(--text-primary);
+  font-size: 15px;
+}

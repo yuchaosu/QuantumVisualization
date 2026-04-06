@@ -1,0 +1,11 @@
+/* src/components/TensorNetworkGraph/TensorNetworkGraph.module.css */
+.container {
+  flex: 3;
+  min-width: 0;
+  overflow: auto;
+  background: var(--bg-base);
+}
+
+.svg {
+  display: block;
+}
